@@ -1,0 +1,27 @@
+module.exports = {
+  content: ["./src/**/*.{html,js}"],
+  theme: {
+    extend: {},
+    colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      mainPurple: "#040028",
+      lightPurple: "#110E30",
+      mainRed: "#DD003F",
+      mainRedBlur: "rgb(221, 0, 63,0.5)",
+      white: "#fff",
+      whiteBlur: "rgba(255, 255, 255,0.7)",
+      mainPurpleBlur: "rgba(4, 0, 40,0.8)",
+      lightPurpleBlur: "#110e30",
+      mainRedBlur: "rgba(221, 0, 63,0.5)",
+      blackBlur: "rgba(0,0,0,0.55)",
+      blackBlurHevy: "rgba(0,0,0,0.85)",
+      black: "rgba(0,0,0)",
+      yellow: "#FFB800",
+      gray: "#828CBD",
+      opa: "rgba(0,0,0,0.5)",
+      orange: "#F24E1E",
+    },
+  },
+  plugins: [],
+};
