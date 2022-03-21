@@ -6,12 +6,14 @@ const usersSchema = new mongoose.Schema(
     password: { type: String },
     profilePicture: { type: String },
     favourites: { type: Array },
-    isAdmin: { type: Boolean },
+    isAdmin: { type: Boolean, default: false },
     sex: { type: Boolean },
     dateOfBirth: { type: Date },
     messageFromAdmin: { type: String },
+    rates: { type: Array },
+    reviews: { type: Array },
   },
-  { timestamps }
+  { timestamps: true }
 );
 
-module.exports = mongoose.Schema("usersModel", usersSchema);
+module.exports = mongoose.model("usersModel", usersSchema);

@@ -2,10 +2,19 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
+import { TheMovieDbProvider } from "./contexts/TMDB/theMovieDbContext";
+import { ConfirmDialogContextProvider } from "./contexts/Dialog/dialogContext";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <TheMovieDbProvider>
+        <ConfirmDialogContextProvider>
+          <App />
+        </ConfirmDialogContextProvider>
+      </TheMovieDbProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
