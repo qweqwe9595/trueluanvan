@@ -1,9 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
+import PhotoReview from "./PhotoReview";
 function MovieDetailImage({ images }) {
   images = images?.filter((image, index) => index < 20);
   const sliderRef = useRef(null);
   const [slide, setSlide] = useState(false);
+  const [photoReview, setPhotoReview] = useState(false);
 
   useEffect(() => {
     setSlide(false);
@@ -53,6 +55,9 @@ function MovieDetailImage({ images }) {
   };
   return (
     <div className="font-dosis w-full">
+      {photoReview && (
+        <PhotoReview photoReview={[photoReview, setPhotoReview]} />
+      )}
       <div className="flex items-center">
         <div className="h-4 w-4 bg-mainRed"></div>
         <h1 className="font-bold text-xl mx-2">PHOTOS</h1>
@@ -70,6 +75,11 @@ function MovieDetailImage({ images }) {
                 className="h-60 w-40 rounded-lg shrink-0 cursor-pointer object-cover"
                 src={`https://image.tmdb.org/t/p/w500/${image.file_path}`}
                 alt=""
+                onClick={() =>
+                  setPhotoReview(
+                    `https://image.tmdb.org/t/p/w500/${image.file_path}`
+                  )
+                }
               />
             );
           })}

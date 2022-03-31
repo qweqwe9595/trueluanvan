@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function MovieDetailTopCast({ celebs }) {
   const celebsMini = celebs?.filter((item, index) => index < 13);
@@ -12,7 +13,8 @@ function MovieDetailTopCast({ celebs }) {
       <div className="grid md:grid-cols-2 w-full  mt-4">
         {celebsMini?.map((celeb, index) => {
           return (
-            <div
+            <Link
+              to={`/cele/detail/${celeb.id}`}
               key={index}
               className="flex px-6 py-2 border-2 border-mainPurple hover:bg-mainRedBlur hover:rounded hover:border-mainRed hover:border-2 cursor-pointer max-w-sm"
             >
@@ -25,7 +27,7 @@ function MovieDetailTopCast({ celebs }) {
                 <h1 className="font-bold capitalize">{celeb?.name}</h1>
                 <p className="text-yellow">{celeb?.character}</p>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

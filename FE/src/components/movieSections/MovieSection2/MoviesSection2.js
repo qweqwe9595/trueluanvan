@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import Movie from "./Movie";
+import { Link } from "react-router-dom";
 
 function MoviesSection2({ type, categories, moviesDB }) {
-  const [rating, setRating] = useState(false);
+  const [rating, setRating] = useState(null);
   const movies = moviesDB.upComming;
   const sliderRef = useRef(null);
-
   const next = () => {
     let scrollAmount = 0;
     var slideTimer = setInterval(function () {
@@ -32,7 +32,7 @@ function MoviesSection2({ type, categories, moviesDB }) {
     <div className="w-view flex-col w-full h-96 text-white relative ">
       <h1 className="uppercase text-xl font-bold mt-3">{type}</h1>
       <div className="flex gap-5 mt-5">
-        {categories.map((i, index) => {
+        {categories?.map((i, index) => {
           return (
             <span
               key={index}
@@ -49,7 +49,8 @@ function MoviesSection2({ type, categories, moviesDB }) {
         })}
       </div>
       <div
-        className=" w-10 h-20 flex justify-center items-center bg-blackBlurHevy rounded absolute  top-1/2 right-0 cursor-pointer z-10"
+        style={{ transform: "translateY(-50%)" }}
+        className=" w-10 h-20 flex justify-center items-center bg-blackBlurHevy rounded absolute top-1/2 right-0 cursor-pointer z-10"
         onClick={() => {
           next();
         }}
@@ -57,6 +58,7 @@ function MoviesSection2({ type, categories, moviesDB }) {
         <FaAngleRight className="text-3xl text-white" />
       </div>
       <div
+        style={{ transform: "translateY(-50%)" }}
         className="mr-3 w-10 h-20 flex justify-center items-center bg-blackBlurHevy rounded absolute top-1/2 cursor-pointer z-10"
         onClick={() => {
           prev();
@@ -64,9 +66,12 @@ function MoviesSection2({ type, categories, moviesDB }) {
       >
         <FaAngleLeft className="text-3xl text-white" />
       </div>
-      <div className="flex items-center mt-4 absolute right-2 cursor-pointer">
-        See all Celebrities <FaAngleRight className="text-2xl text-mainRed" />
-      </div>
+      <Link
+        to={"/movielist/upcommingmovies"}
+        className="flex items-center mt-4 absolute right-2 cursor-pointer"
+      >
+        See all <FaAngleRight className="text-2xl text-mainRed" />
+      </Link>
     </div>
   );
 }

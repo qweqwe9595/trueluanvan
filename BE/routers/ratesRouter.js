@@ -24,7 +24,7 @@ router.get("/movie/average/:id", async (req, res) => {
       return prev + curr.point;
     }, 0);
 
-    const averagePoint = totalPoint / ratesQuery.length;
+    const averagePoint = (totalPoint / ratesQuery.length).toFixed(1);
 
     res.status(200).json({ averagePoint: averagePoint });
   } catch (error) {
@@ -53,7 +53,11 @@ router.get("/user", authenticateToken, async (req, res) => {
 //get a user rating of a movie
 router.get("/usersmovierate/:id", authenticateToken, async (req, res) => {
   try {
-    const ratesQuery = await ratesModel.find();
+    const ratesQuery = await ratesModel.findOne({
+      movieId: req.params.id,
+      userId: req.user._id,
+    });
+
     res.status(200).json(ratesQuery);
   } catch (error) {
     res.status(500).json(err);
@@ -72,8 +76,15 @@ router.get("/:id", authenticateToken, async (req, res) => {
 //rate a movie
 router.post("/rating", authenticateToken, async (req, res) => {
   try {
-    const movieQuery = await ratesModel.find({ movieId: req.body.movieId });
-    if (movieQuery.length) {
+    const movieQuery = await ratesModel.findOne({
+      movieId: req.body.movieId,
+      userId: req.user._id,
+    });
+    if (movieQuery && req.body.point === 0) {
+      const deleteQuery = await ratesModel.findByIdAndDelete(movieQuery._id);
+      return res.status(200).json({ deleteQuery });
+    }
+    if (movieQuery) {
       const movieUpdate = await ratesModel.findOneAndUpdate(
         { movieId: req.body.movieId },
         {
@@ -94,6 +105,7 @@ router.post("/rating", authenticateToken, async (req, res) => {
     res.status(200).json(newRateQuery);
   } catch (err) {
     res.status(500).json(err);
+    console.log(err);
   }
 });
 

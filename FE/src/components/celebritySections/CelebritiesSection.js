@@ -1,5 +1,6 @@
 import React from "react";
 import { FaAngleRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function CelebritiesSection({ cele }) {
   const celeFilter = cele?.filter((item, index) => {
@@ -13,7 +14,8 @@ function CelebritiesSection({ cele }) {
       <div className="flex flex-col mt-4 gap-4">
         {celeFilter?.map((cele) => {
           return (
-            <div
+            <Link
+              to={`/cele/detail/${cele.id}`}
               key={cele.id}
               className="flex pl-3 py-1 hover:bg-mainRed hover:rounded cursor-pointer"
             >
@@ -26,7 +28,7 @@ function CelebritiesSection({ cele }) {
                 <h1 className="font-bold capitalize">{cele.name}</h1>
                 <p className="text-yellow">{cele.popularity}</p>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

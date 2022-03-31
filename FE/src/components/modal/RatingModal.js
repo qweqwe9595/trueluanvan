@@ -6,18 +6,33 @@ import { getCookie } from "../../helper/cookie";
 function RatingModal({ openProp, movie }) {
   const [open, setOpen] = openProp;
   const [ratingValue, setRatingValue] = useState(1);
-  const [yourRating, setYourRating] = useState("?");
-
-  useEffect(() => {}, []);
 
   const rating = async () => {
+    location.reload();
     try {
+      const token = `bearer ${getCookie("Token")}`;
+      const res = await axios.post(
+        "http://localhost:5000/api/rates/rating",
+        {
+          movieId: movie.id,
+          point: ratingValue,
+        },
+        { headers: { token } }
+      );
+      console.log(res);
+    } catch (err) {
+      alert(err);
+    }
+  };
+  const removeRating = async () => {
+    try {
+      console.log("asd");
       const token = `bearer ${getCookie("Token")}`;
       await axios.post(
         "http://localhost:5000/api/rates/rating",
         {
           movieId: movie.id,
-          point: ratingValue,
+          point: 0,
         },
         { headers: { token } }
       );
@@ -50,7 +65,7 @@ function RatingModal({ openProp, movie }) {
             >
               X
             </div>
-            <h1 className="font-bold text-4xl">Movie Name</h1>
+            <h1 className="font-bold text-4xl">{movie?.title}</h1>
             <div className="flex flex-row-reverse text-3xl cursor-pointer gap-2 mt-2">
               {[...Array(5)].map((star, index) => {
                 return (
@@ -83,11 +98,20 @@ function RatingModal({ openProp, movie }) {
               className="w-full bg-yellow py-2 font-bold mt-2"
               onClick={() => {
                 rating();
+                setOpen(false);
               }}
             >
               Confirm
             </button>
-            <button className="w-full py-2 font-bold">Remove Rating</button>
+            <button
+              className="w-full py-2 font-bold"
+              onClick={() => {
+                removeRating();
+                setOpen(false);
+              }}
+            >
+              Remove Rating
+            </button>
           </div>
         </div>
       )}

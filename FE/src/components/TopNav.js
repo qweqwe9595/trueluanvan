@@ -19,7 +19,6 @@ function TopNav() {
     const res = await axios.get(`http://localhost:5000/api/users`, {
       headers: { token: `bearer ${userToken}` },
     });
-    console.log(res.data.data._id);
     setUserName(res.data.data.email);
     setUserId(res.data.data._id);
   }, []);
@@ -135,7 +134,7 @@ function MenuUser({ userId }) {
   };
   return (
     <ul className="w-32 bg-black flex flex-col p-4 text-white">
-      <Link to={`profile/${userId}`}>
+      <Link to={`/profile/${userId}`}>
         <li className="font-bold cursor-pointer hover:underline">
           Your Account
         </li>

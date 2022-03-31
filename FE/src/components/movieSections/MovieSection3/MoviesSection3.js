@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { FaStar, FaAngleRight, FaAngleLeft } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function MoviesSection3({ type, categories, movies }) {
   const sliderRef = useRef(null);
@@ -30,7 +31,7 @@ function MoviesSection3({ type, categories, movies }) {
       {type && <h1 className="uppercase text-xl font-bold mt-3">{type}</h1>}
       {categories && (
         <div className="flex gap-5 mt-5">
-          {categories.map((i, index) => (
+          {categories?.map((i, index) => (
             <span
               key={index}
               className="hover:text-yellow cursor-pointer uppercase"
@@ -44,7 +45,7 @@ function MoviesSection3({ type, categories, movies }) {
       <div ref={sliderRef} className="mt-2 flex gap-10 overflow-x-hidden h-fit">
         {movies?.map((movie) => {
           return (
-            <div key={movie?.id} className="h-fit">
+            <Link to={`/detail/${movie?.id}`} key={movie?.id} className="h-fit">
               <div
                 className="h-72 w-60 cursor-pointer"
                 style={{
@@ -73,7 +74,7 @@ function MoviesSection3({ type, categories, movies }) {
                 <span className="mr-2">10/10</span>
                 <FaStar className="text-mainRed"></FaStar>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

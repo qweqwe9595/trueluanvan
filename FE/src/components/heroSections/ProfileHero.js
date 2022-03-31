@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { getCookie } from "../../helper/cookie";
 
-function ProfileHero({ user }) {
+function ProfileHero({ user, rateAmount, reviewAmount }) {
   return (
     <div className="w-full flex justify-center items-center pt-12 pb-10">
       <div className="profileHero h-60 w-60 bg-lightPurple rounded-2xl flex flex-col items-center justify-between pb-7">
@@ -20,15 +20,15 @@ function ProfileHero({ user }) {
         <div className="w-full flex justify-around">
           <div className="text-center">
             <h3 className="font-bold">Reviews</h3>
-            <span>{user?.rates ? user.rates.length : "0"}</span>
+            <span>{reviewAmount || 0}</span>
           </div>
           <div className="text-center">
             <h3 className="font-bold">Ratings</h3>
-            <span>{user?.reviews ? user.reviews.length : "0"}</span>
+            <span>{rateAmount || 0}</span>
           </div>
           <div className="text-center">
-            <h3 className="font-bold">Rating</h3>
-            <span>90</span>
+            <h3 className="font-bold">Polls</h3>
+            <span>0</span>
           </div>
         </div>
       </div>

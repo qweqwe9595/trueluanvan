@@ -1,16 +1,8 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { FaStar } from "react-icons/fa";
+import React from "react";
+import { FaStar, FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function Movie({ movie }) {
-  const [averagePoint, setAveragePoint] = useState("no rating");
-  useEffect(async () => {
-    const res = await axios.get(
-      `http://localhost:5000/api/rates/movie/average/${movie.id}`
-    );
-    setAveragePoint(res.data.averagePoint);
-  }, []);
   return (
     <Link to={`/detail/${movie.id}`}>
       <div
@@ -23,15 +15,11 @@ function Movie({ movie }) {
           backgroundPosition: "center",
         }}
       >
-        <div className="bg-blackOpacity h-full w-full top-0 left-0 absolute pl-4 pt-28">
+        <div className="bg-blackOpacity h-full w-full top-0 left-0 absolute pl-4 pt-32">
           <h2 className="px-1.5 bg-yellow inline rounded-lg">
-            {movie.genres ? movie.genres[0].name : "asdsa"}
+            {movie.genres ? movie?.genres[0]?.name : ""}
           </h2>
           <h1 className="font-bold">{movie?.title}</h1>
-          <div className="flex items-center">
-            <FaStar className="mr-2" />
-            <span>{averagePoint}/5</span>
-          </div>
         </div>
       </div>
       {movie?.userPoint && (

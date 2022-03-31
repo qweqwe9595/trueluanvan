@@ -19,6 +19,7 @@ function RateConfirm() {
         { headers: { token } }
       );
       setConfirmDialog({ open: false });
+      location.reload();
     } catch (err) {
       console.log(err.response.data);
     }

@@ -1,14 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SiThemoviedatabase } from "react-icons/si";
 import { FaStar } from "react-icons/fa";
 import { FiPlay, FiBookmark } from "react-icons/fi";
 import RatingModal from "../modal/RatingModal";
+import axios from "axios";
+import { getCookie } from "../../helper/cookie";
 
 function MovieDetailHero({ movie }) {
   const [open, setOpen] = useState(false);
   const directors = movie?.credits?.crew?.filter(
     (crew) => crew.known_for_department === "Directing"
   );
+  const [averagePoint, setAveragePoint] = useState("?");
+  const [yourRating, setYourRating] = useState("?");
+
+  useEffect(async () => {
+    try {
+      const token = `bearer ${getCookie("Token")}`;
+      const res = await axios.get(
+        `http://localhost:5000/api/rates/usersmovierate/${movie.id}`,
+        { headers: { token } }
+      );
+      setYourRating(res.data.point);
+      //averagePoint
+      const res2 = await axios.get(
+        `http://localhost:5000/api/rates/movie/average/${movie.id}`
+      );
+      setAveragePoint(res2.data.averagePoint);
+    } catch (error) {}
+  });
+
   return (
     <div
       style={{
@@ -47,7 +68,9 @@ function MovieDetailHero({ movie }) {
                 Web Rate
               </span>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-xl md:text-3xl">4.5</span>
+                <span className="font-bold text-xl md:text-3xl">
+                  {averagePoint}
+                </span>
                 <SiThemoviedatabase className="text-yellow text-xl md:text-mainRed md:text-3xl" />
               </div>
             </div>
@@ -61,7 +84,9 @@ function MovieDetailHero({ movie }) {
                 Your Rate
               </span>
               <div className="flex items-center gap-2 ">
-                <span className="font-bold text-xl md:text-3xl">8.0</span>
+                <span className="font-bold text-xl md:text-3xl">
+                  {yourRating}
+                </span>
                 <FaStar className="text-yellow text-xl md:text-mainRed md:text-3xl" />
               </div>
             </div>
