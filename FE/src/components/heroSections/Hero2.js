@@ -5,7 +5,7 @@ function Hero2({ movies }) {
   const sliderRef = useRef(null);
   const [youtubeURL, setYourubeURL] = useState("");
   useEffect(() => {
-    setYourubeURL(movies[0]?.videos.results[0].key);
+    setYourubeURL(movies[0]?.videos?.results[0].key);
   }, [movies]);
 
   const down = () => {

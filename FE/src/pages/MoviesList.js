@@ -16,8 +16,6 @@ function MoviesList() {
 
   const [resestFilter, setResestFilter] = useState(false);
   useEffect(async () => {
-    if (Object.keys(user).length === 0) return;
-    console.log("asdsad");
     switch (movieType) {
       case "popularmovies":
         {
@@ -62,7 +60,7 @@ function MoviesList() {
         break;
     }
   }, [page, user, resestFilter, searchParams]);
-  console.log(movies);
+
   return (
     <div className="flex flex-col w-screen max-w-full bg-mainPurple text-white ">
       <TopNav></TopNav>
@@ -114,11 +112,12 @@ const joinVideos = async (id) => {
 };
 
 const joinRates = async (movie, token) => {
-  if (!token) return;
   const resTMDB = await axios.get(
     `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${TMDB_TOKEN}&language=en-US&append_to_response=videos,genre`
   );
+
   const movieWithGenre = resTMDB.data;
+  if (!token) return movieWithGenre;
   const res = await axios.get(
     `http://localhost:5000/api/rates/movie/average/${movieWithGenre.id}`,
     {

@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { getCookie } from "../../helper/cookie";
 
-function RatingModal({ openProp, movie }) {
+function RatingModal({ openProp, movie, yourRatingProp, review, refresh }) {
   const [open, setOpen] = openProp;
+  const [yourRating, setYourRating] = yourRatingProp || [];
   const [ratingValue, setRatingValue] = useState(1);
+  const [reviewText, setReviewText] = useState(review?.review || "");
 
+  //rating or reviewing
   const rating = async () => {
-    location.reload();
     try {
       const token = `bearer ${getCookie("Token")}`;
       const res = await axios.post(
@@ -19,25 +21,31 @@ function RatingModal({ openProp, movie }) {
         },
         { headers: { token } }
       );
-      console.log(res);
-    } catch (err) {
-      alert(err);
-    }
-  };
-  const removeRating = async () => {
-    try {
-      console.log("asd");
-      const token = `bearer ${getCookie("Token")}`;
-      await axios.post(
-        "http://localhost:5000/api/rates/rating",
+      setYourRating(ratingValue);
+      if (!review) return;
+      const resReview = await axios.patch(
+        `http://localhost:5000/api/reviews/update/${review?._id}`,
         {
-          movieId: movie.id,
-          point: 0,
+          review: reviewText,
         },
         { headers: { token } }
       );
+      refresh((prev) => !prev);
     } catch (err) {
-      alert(err);
+      console.log(err.response);
+    }
+  };
+
+  //remove rate or review
+  const removeRating = async () => {
+    try {
+      const token = `bearer ${getCookie("Token")}`;
+      await axios.delete(`http://localhost:5000/api/rates/${movie.id}`, {
+        headers: { token },
+      });
+      setYourRating("?");
+    } catch (err) {
+      console.log(err.response);
     }
   };
 
@@ -47,6 +55,7 @@ function RatingModal({ openProp, movie }) {
         <div
           className="fixed top-0 left-0 w-screen max-w-full h-screen bg-blackBlur z-50 flex items-center justify-center font-dosis"
           onClick={(e) => {
+            e.preventDefault();
             setOpen(false);
             e.stopPropagation();
           }}
@@ -54,6 +63,7 @@ function RatingModal({ openProp, movie }) {
           <div
             className="relative w-11/12 pt-10 bg-lightPurple flex flex-col items-center justify-center rounded"
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
             }}
           >
@@ -94,6 +104,20 @@ function RatingModal({ openProp, movie }) {
                 );
               })}
             </div>
+            {review && (
+              <div className="w-full px-2 mt-2">
+                <textarea
+                  className="w-full text-mainPurple px-2 text-xl"
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="10"
+                  value={reviewText}
+                  onChange={(e) => setReviewText(e.target.value)}
+                ></textarea>
+              </div>
+            )}
+
             <button
               className="w-full bg-yellow py-2 font-bold mt-2"
               onClick={() => {
@@ -105,12 +129,13 @@ function RatingModal({ openProp, movie }) {
             </button>
             <button
               className="w-full py-2 font-bold"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 removeRating();
                 setOpen(false);
               }}
             >
-              Remove Rating
+              {review ? "Remove Review" : "Remove Rating"}
             </button>
           </div>
         </div>

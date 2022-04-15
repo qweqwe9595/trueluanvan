@@ -1,18 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { SiThemoviedatabase } from "react-icons/si";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaCaretDown, FaListAlt } from "react-icons/fa";
 import { FiPlay, FiBookmark } from "react-icons/fi";
 import RatingModal from "../modal/RatingModal";
 import axios from "axios";
+import { UserContext } from "../../contexts/User/UserContext";
 import { getCookie } from "../../helper/cookie";
 
 function MovieDetailHero({ movie }) {
+  const [user] = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const directors = movie?.credits?.crew?.filter(
     (crew) => crew.known_for_department === "Directing"
   );
   const [averagePoint, setAveragePoint] = useState("?");
   const [yourRating, setYourRating] = useState("?");
+  const [addWatchLater, setAddWatchLater] = useState(false);
+  const [addList, setAddList] = useState(false);
+
+  useEffect(() => {
+    setAddWatchLater(
+      user?.watchLater?.movies?.some((item) => item == movie?.id?.toString())
+    );
+  }, [movie, user]);
 
   useEffect(async () => {
     try {
@@ -30,6 +40,29 @@ function MovieDetailHero({ movie }) {
     } catch (error) {}
   });
 
+  const addToWatchLater = async () => {
+    try {
+      const res = axios.patch(
+        `http://localhost:5000/api/movielist/pushmovie/${user.watchLater._id}`,
+        { movieId: movie.id.toString() }
+      );
+      setAddWatchLater(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const removeFromWatchLater = async () => {
+    try {
+      const res = axios.patch(
+        `http://localhost:5000/api/movielist/pullmovie/${user.watchLater._id}`,
+        { movieId: movie.id.toString() }
+      );
+      setAddWatchLater(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div
       style={{
@@ -39,9 +72,13 @@ function MovieDetailHero({ movie }) {
         backgroundSize: "cover",
       }}
     >
-      <RatingModal openProp={[open, setOpen]} movie={movie} />
+      <RatingModal
+        openProp={[open, setOpen]}
+        movie={movie}
+        yourRatingProp={[yourRating, setYourRating]}
+      />
       <div className="w-full px-10 lg:px-60 md:flex py-4 relative bg-hero ">
-        <div className="w-full px-10 rounded-xl font-dosis md:max-w-lg">
+        <div className="w-full px-10 rounded-xl font-dosis md:max-w-lg flex flex-col items-center gap-2">
           <img
             className="w-full rounded-xl"
             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
@@ -52,13 +89,52 @@ function MovieDetailHero({ movie }) {
           </div>
           <div className="hidden md:flex  font-dosis gap-2 justify-center mt-2">
             <div className="flex px-3 py-1 border-2 border-mainRed w-fit rounded-3xl items-center font-bold cursor-pointer text-sm">
-              <FiPlay className="text-mainRed text-4xl" />
+              <FiPlay className="text-mainRed text-4xl text-center" />
               Play trailer
             </div>
-            <div className="flex px-3 py-1 border-2 border-mainRed w-fit rounded-3xl items-center font-bold cursor-pointer text-sm">
-              <FiBookmark className="text-mainRed text-4xl" />
-              <span>Add to watch list</span>
-            </div>
+            {addWatchLater ? (
+              <div
+                className="flex px-3 py-1 border-2 border-mainRed w-fit rounded-3xl items-center font-bold cursor-pointer text-sm bg-mainRedBlur text-center"
+                onClick={() => removeFromWatchLater()}
+              >
+                <FiBookmark className="text-white text-4xl" />
+                <span>Remove From Watch Later</span>
+              </div>
+            ) : (
+              <div
+                className="flex px-3 py-1 border-2 border-mainRed w-fit rounded-3xl items-center font-bold cursor-pointer text-sm text-center"
+                onClick={() => addToWatchLater()}
+              >
+                <FiBookmark className="text-mainRed text-4xl" />
+                <span>Add to Watch Later</span>
+              </div>
+            )}
+          </div>
+          <div
+            className="flex px-3 py-3 border-2 border-mainRed w-fit rounded-3xl items-center font-bold cursor-pointer text-sm relative gap-2"
+            onClick={() => setAddList(!addList)}
+            onMouseLeave={() => setAddList(false)}
+          >
+            <FaListAlt className="text-mainRed text-xl" />
+            <span className="flex items-center">
+              Add to List <FaCaretDown className="text-xl" />
+            </span>
+            {addList && (
+              <ul className="absolute top-11 left-0 border border-mainRed px-1 py-2 bg-blackBlur rounded-xl w-full max-h-32 overflow-y-scroll flex flex-col gap-1 z-10">
+                <li className=" px-2 py-1 rounded-xl bg-mainRedBlur hover:bg-mainRed">
+                  watch list
+                </li>
+                <li className=" px-2 py-1 rounded-xl bg-mainRedBlur ">
+                  watch list
+                </li>
+                <li className=" px-2 py-1 rounded-xl bg-mainRedBlur ">
+                  watch list
+                </li>
+                <li className=" px-2 py-1 rounded-xl bg-mainRedBlur ">
+                  watch list
+                </li>
+              </ul>
+            )}
           </div>
         </div>
         <div className="w-full">
@@ -74,22 +150,24 @@ function MovieDetailHero({ movie }) {
                 <SiThemoviedatabase className="text-yellow text-xl md:text-mainRed md:text-3xl" />
               </div>
             </div>
-            <div
-              className="flex items-center gap-2 md:flex-col md:items-start cursor-pointer"
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              <span className="font-bold text-yellow md:text-white md:text-2xl">
-                Your Rate
-              </span>
-              <div className="flex items-center gap-2 ">
-                <span className="font-bold text-xl md:text-3xl">
-                  {yourRating}
+            {user.token && (
+              <div
+                className="flex items-center gap-2 md:flex-col md:items-start cursor-pointer"
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                <span className="font-bold text-yellow md:text-white md:text-2xl">
+                  Your Rate
                 </span>
-                <FaStar className="text-yellow text-xl md:text-mainRed md:text-3xl" />
+                <div className="flex items-center gap-2 ">
+                  <span className="font-bold text-xl md:text-3xl">
+                    {yourRating}
+                  </span>
+                  <FaStar className="text-yellow text-xl md:text-mainRed md:text-3xl" />
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <h1 className="hidden md:block text-6xl font-bold font-dosis mt-4 text-center">
             {movie?.title}
@@ -101,7 +179,7 @@ function MovieDetailHero({ movie }) {
             </div>
             <div className="flex px-4 py-3 border-2 border-mainRed w-fit rounded-3xl items-center font-bold cursor-pointer">
               <FiBookmark className="text-mainRed text-xl" />
-              <span>Add to watch list</span>
+              <span>Add to watch later</span>
             </div>
           </div>
           <div className="flex justify-center gap-2 mt-4 md:justify-start items-start">

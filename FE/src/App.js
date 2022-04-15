@@ -3,6 +3,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import MovieDetail from "./pages/MovieDetail";
+import Rates from "./pages/Rates";
+import News from "./pages/News";
 import { Routes, Route } from "react-router-dom";
 import CeleDetail from "./pages/CeleDetail";
 import { UserContextProvider, UserContext } from "./contexts/User/UserContext";
@@ -10,7 +12,9 @@ import { useContext, useEffect } from "react";
 import { getCookie } from "./helper/cookie";
 import MoviesList from "./pages/MoviesList";
 import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import Admin from "./pages/Admin";
+import Reviews from "./pages/Reviews";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -18,16 +22,37 @@ function App() {
 
   useEffect(() => {
     const userToken = getCookie("Token");
-    console.log(userToken);
     const getUser = async () => {
       if (!userToken) return;
-      const res = await axios.get(`http://localhost:5000/api/users`, {
-        headers: { token: `bearer ${userToken}` },
-      });
-      setUser({ ...res.data.data, ...{ token: `bearer ${userToken}` } });
+      try {
+        const res = await axios.get(`http://localhost:5000/api/users`, {
+          headers: { token: `bearer ${userToken}` },
+        });
+        const resWatchLater = await axios.get(
+          `http://localhost:5000/api/movielist/getdefault`,
+          {
+            headers: { token: `bearer ${userToken}` },
+          }
+        );
+        const resList = await axios.get(
+          `http://localhost:5000/api/movielist/getuserlist`,
+          {
+            headers: { token: `bearer ${userToken}` },
+          }
+        );
+
+        setUser({
+          ...res.data.data,
+          ...{ token: `bearer ${userToken}` },
+          ...{ watchLater: resWatchLater.data },
+          ...{ list: resList.data },
+        });
+      } catch (error) {
+        console.log(error.response);
+      }
     };
     getUser();
-  }, []);
+  }, [params]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,6 +66,12 @@ function App() {
       <Route path="/detail/:movieId" element={<MovieDetail />} />
       <Route path="/cele/detail/:celeId" element={<CeleDetail />} />
       <Route path="/movielist/:type" element={<MoviesList />} />
+      <Route path="/rates" element={<Rates />} />
+      <Route path="/reviews" element={<Reviews />} />
+      <Route path="/news/:id" element={<News />} />
+      <Route path="/admin" element={<Admin />}>
+        <Route path="test" element={<div></div>} />
+      </Route>
       <Route path="/" element={<Home />} />
     </Routes>
   );

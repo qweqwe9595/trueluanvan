@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import Movie from "./Movie";
+import { UserContext } from "../../../contexts/User/UserContext";
 
 function MoviesSection4({ more, moviesProp, resest }) {
+  const [user] = useContext(UserContext);
   const [page, setPage] = more;
   const [movies, setMovies] = moviesProp;
   const [sortType, setSortType] = useState("");
@@ -92,7 +94,8 @@ function MoviesSection4({ more, moviesProp, resest }) {
           onChange={(e) => sort(e.target.value)}
         >
           <option value="none"></option>
-          <option value="web">Web Rating</option>
+          {user.token && <option value="web">Web Rating</option>}
+
           <option value="name">Name</option>
           <option value="date">Release Day</option>
         </select>

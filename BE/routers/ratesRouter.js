@@ -130,9 +130,17 @@ router.patch("/", authenticateToken, async (req, res) => {
 
 //delete a rate
 router.delete("/:id", authenticateToken, async (req, res) => {
+  console.log(req.user._id);
   try {
-    const rateQuery = await ratesModel.findById(req.params.id);
-    if (!rateQuery) {
+    if (!req.user) res.status(401).json({ message: "no user" });
+    const rateQuery = await ratesModel.findOne({
+      movieId: req.params.id,
+      userId: req.user._id,
+    });
+    console.log(rateQuery);
+    if (rateQuery === null)
+      return res.status(500).json({ message: "dont have this id 2" });
+    if (!rateQuery.length === 0) {
       return res.status(500).json({ message: "dont have this id" });
     }
     if (rateQuery.userId !== req.user.id) {
@@ -141,7 +149,7 @@ router.delete("/:id", authenticateToken, async (req, res) => {
     await rateQuery.deleteOne();
     res.status(200).json({ message: "deleted" });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json(error.message);
   }
 });
 

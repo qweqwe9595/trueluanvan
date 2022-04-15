@@ -12,6 +12,7 @@ import RateConfirm from "../components/dialog/RateConfirm";
 import { TheMovieDBContext } from "../contexts/TMDB/theMovieDbContext";
 import { ConfirmDialogContext } from "../contexts/Dialog/dialogContext";
 import axios from "axios";
+import { getCookie } from "../helper/cookie";
 const TMDB_TOKEN = "500cc81d4dbf1d8c0a24c0ee8576f22c";
 
 function Home() {
@@ -30,21 +31,36 @@ function Home() {
         return await joinVideos(movie.id);
       }
     );
-
     const popular2MoviesArray = await popularMovies2.popular2.map(
       async (movie) => {
         return await joinVideos(movie.id);
       }
     );
-
     const popularMoviesArray = await popularMovies.popular.map(
       async (movie) => {
         return await joinVideos(movie.id);
       }
     );
+    const upCommingMoviesArrayJoinWatchList = await upCommingMovies.upComming.map(
+      async (movie) => {
+        return await joinWatchList(movie);
+      }
+    );
+    const popular2MoviesArrayJoinWatchList = await popularMovies2.popular2.map(
+      async (movie) => {
+        return await joinWatchList(movie);
+      }
+    );
+    const popularMoviesArrayJoinWatchList = await popularMovies.popular.map(
+      async (movie) => {
+        return await joinWatchList(movie);
+      }
+    );
 
-    await Promise.all(upCommingMoviesArray).then((res) => {
-      upCommingMovies = { ...upCommingMovies, ...{ upComming: res } };
+    await Promise.all(upCommingMoviesArray).then(async (res) => {
+      await Promise.all(upCommingMoviesArrayJoinWatchList).then((res) => {
+        upCommingMovies = { ...upCommingMovies, ...{ upComming: res } };
+      });
     });
     await Promise.all(popularMoviesArray).then((res) => {
       popularMovies2 = { ...popularMovies, ...{ popular: res } };
@@ -52,6 +68,7 @@ function Home() {
     await Promise.all(popular2MoviesArray).then((res) => {
       popularMovies2 = { ...popularMovies2, ...{ popular2: res } };
     });
+
     //set userRateMovies
 
     //set popular
@@ -68,6 +85,7 @@ function Home() {
     //set celeb
     dispatch({ type: "SET_CELEBRITIES", payload: celebrities });
   }, []);
+  console.log(movies);
   return (
     <div className="flex flex-col w-screen max-w-full bg-mainPurple text-white ">
       {dialog.movieName ? (
@@ -87,7 +105,10 @@ function Home() {
       <Hero></Hero>
       <div className="flex flex-col w-screen max-w-full">
         <div className="w-full px-4 lg:px-20">
-          <MoviesSection2 type="UpComming" moviesDB={movies}></MoviesSection2>
+          <MoviesSection2
+            type="UpComming"
+            movies={movies.upComming}
+          ></MoviesSection2>
         </div>
         <div className="h-fit w-full flex gap-10 bg-lightPurple px-4 lg:px-20">
           <div className="w-full lg:w-2/3">
@@ -152,4 +173,19 @@ const joinVideos = async (id) => {
     `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_TOKEN}&language=en-US&append_to_response=videos,genre`
   );
   return res.data;
+};
+
+const joinWatchList = async (movie) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:5000/api/movielist/getdefault`,
+      { headers: { token: `bearer ${getCookie("Token")}` } }
+    );
+    if (res.data.movies.includes(movie.id.toString())) {
+      return { ...movie, ...{ watchLater: true } };
+    }
+    return { ...movie, ...{ watchLater: false } };
+  } catch (error) {
+    console.log(error);
+  }
 };

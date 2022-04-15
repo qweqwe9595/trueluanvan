@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { FaStar, FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-function MoviesSection3({ type, categories, movies }) {
+function MoviesSection3({ type, categories, movies, rate = true }) {
   const sliderRef = useRef(null);
 
   const next = () => {
@@ -69,11 +69,12 @@ function MoviesSection3({ type, categories, movies }) {
                     );
                 })}
               </div>
-
-              <div className="flex items-center">
-                <span className="mr-2">10/10</span>
-                <FaStar className="text-mainRed"></FaStar>
-              </div>
+              {rate && (
+                <div className="flex items-center">
+                  <span className="mr-2">10/10</span>
+                  <FaStar className="text-mainRed"></FaStar>
+                </div>
+              )}
             </Link>
           );
         })}

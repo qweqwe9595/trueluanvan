@@ -12,7 +12,9 @@ function SearchBox({ searching, setSearching }) {
   useEffect(() => {
     const event = (e) => {
       if (e.key === "Enter") {
-        navigate(`/movielist/search?string=${searchValue}`);
+        navigate(
+          `/movielist/search?string=${searchValue.replaceAll(/\s/g, "")}`
+        );
         setSearching(false);
       }
     };

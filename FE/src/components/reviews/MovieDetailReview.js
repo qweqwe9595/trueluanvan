@@ -8,7 +8,7 @@ import RatingModal from "../modal/RatingModal";
 import ErrorLogin from "../dialog/ErrorLogin";
 import Review from "./Review";
 
-function MovieDetailReview({ movie }) {
+function MovieDetailReview({ movie, setRefresh }) {
   const [user] = useContext(UserContext);
   const [yourRating, setYourRating] = useState(null);
   const [ratingId, setRatingId] = useState(null);
@@ -27,7 +27,7 @@ function MovieDetailReview({ movie }) {
 
     setYourRating(res?.data?.point);
     setRatingId(res?.data?._id);
-  }, [movie]);
+  }, [movie, rating]);
 
   useEffect(async () => {
     const token = `bearer ${getCookie("Token")}`;
@@ -38,7 +38,7 @@ function MovieDetailReview({ movie }) {
     setReviews(
       res.data.reviewsQuery.reverse().filter((item, index) => index < 5)
     );
-  }, [movie]);
+  }, [movie, rating]);
 
   const sendReview = async (e) => {
     const token = `bearer ${getCookie("Token")}`;
@@ -57,14 +57,20 @@ function MovieDetailReview({ movie }) {
       },
       { headers: { token } }
     );
-
-    setReviews((prev) => [res.data.reviewsQuery, ...prev]);
+    setRefresh((prev) => !prev);
     setReviewSucess(true);
   };
   return (
     <div className="w-full flex flex-col gap-4 mt-2 font-dosis">
       {error && <ErrorLogin message={error} close={setError} />}
-      {rating && <RatingModal openProp={[rating, setRating]} movie={movie} />}
+      {rating && (
+        <RatingModal
+          openProp={[rating, setRating]}
+          movie={movie}
+          yourRatingProp={[yourRating, setYourRating]}
+          refresh={setRefresh}
+        />
+      )}
       {reviewSuccess && (
         <ErrorLogin
           message={"Review Success"}
@@ -72,69 +78,72 @@ function MovieDetailReview({ movie }) {
           type={true}
         />
       )}
-
-      <form className="bg-lightPurple rounded-xl p-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 ">
-            <img
-              className="h-16 w-16 rounded-full object-cover p-1 border-mainRed border-2"
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Leonardo_Dicaprio_Cannes_2019_2.jpg/250px-Leonardo_Dicaprio_Cannes_2019_2.jpg"
-              alt=""
-            />
-            <span className="font-bold text-xl capitalize">{user?.email}</span>
-          </div>
-          <div
-            className="flex gap-1 flex-row-reverse"
-            onClick={() => setRating(true)}
-          >
-            {[...Array(5)].map((star, index) => {
-              return (
-                <div key={index}>
-                  <input
-                    className="hidden"
-                    id={`radio${index + 1}`}
-                    key={index}
-                    type="radio"
-                    value={index + 1}
-                  />
-                  <label
-                    className="cursor-pointer"
-                    htmlFor={`radio${index + 1}`}
-                  >
-                    <FaStar
-                      color={index + 1 <= yourRating ? "#DD003F" : "#e4e6e9"}
+      {user.token && (
+        <form className="bg-lightPurple rounded-xl p-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 ">
+              <img
+                className="h-16 w-16 rounded-full object-cover p-1 border-mainRed border-2"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Leonardo_Dicaprio_Cannes_2019_2.jpg/250px-Leonardo_Dicaprio_Cannes_2019_2.jpg"
+                alt=""
+              />
+              <span className="font-bold text-xl capitalize">
+                {user?.email}
+              </span>
+            </div>
+            <div
+              className="flex gap-1 flex-row-reverse"
+              onClick={() => setRating(true)}
+            >
+              {[...Array(5)].map((star, index) => {
+                return (
+                  <div key={index}>
+                    <input
+                      className="hidden"
+                      id={`radio${index + 1}`}
+                      key={index}
+                      type="radio"
                       value={index + 1}
-                      id={index + 1}
                     />
-                  </label>
-                </div>
-              );
-            })}
+                    <label
+                      className="cursor-pointer"
+                      htmlFor={`radio${index + 1}`}
+                    >
+                      <FaStar
+                        color={index + 1 <= yourRating ? "#DD003F" : "#e4e6e9"}
+                        value={index + 1}
+                        id={index + 1}
+                      />
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-        <div className="bg-mainPurple rounded-xl flex items-center px-2 mt-2">
-          <input
-            className="bg-mainPurple grow p-2 rounded-xl outline-0"
-            type="text"
-            placeholder="Your Review"
-            required
-            value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}
-          />
-          <button
-            onClick={(e) => {
-              sendReview(e);
-            }}
-          >
-            <AiOutlineSend className="text-mainRed text-2xl" type="submit" />
-          </button>
-        </div>
-        <h2 className="text-mainRed cursor-pointer float-right font-bold text-xl">
-          Detail {">>"}
-        </h2>
-      </form>
-      {reviews.map((review) => (
-        <Review key={review.id} review={review} user={user} />
+          <div className="bg-mainPurple rounded-xl flex items-center px-2 mt-2">
+            <input
+              className="bg-mainPurple grow p-2 rounded-xl outline-0"
+              type="text"
+              placeholder="Your Review"
+              required
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+            />
+            <button
+              onClick={(e) => {
+                sendReview(e);
+              }}
+            >
+              <AiOutlineSend className="text-mainRed text-2xl" type="submit" />
+            </button>
+          </div>
+          <h2 className="text-mainRed cursor-pointer float-right font-bold text-xl">
+            Detail {">>"}
+          </h2>
+        </form>
+      )}
+      {reviews.map((review, index) => (
+        <Review key={index} review={review} user={user} rate={yourRating} />
       ))}
     </div>
   );

@@ -30,6 +30,7 @@ function Login() {
       navigate("/");
     } catch (err) {
       if (err.response.data.message == "wrong user") {
+        console.log("");
         return setError("wrong user");
       }
     }
@@ -95,7 +96,12 @@ function Login() {
               <input className="mr-2 " type="checkbox" />
               <span>Remember me</span>
             </div>
-            <button className="lg:block hidden py-1 px-10 bg-mainRed text-2xl  rounded-md cursor-pointer">
+            <button
+              className="lg:block hidden py-1 px-10 bg-mainRed text-2xl  rounded-md cursor-pointer"
+              onClick={(e) => {
+                login(e);
+              }}
+            >
               Login
             </button>
             <span className="float-right">Forgot password?</span>

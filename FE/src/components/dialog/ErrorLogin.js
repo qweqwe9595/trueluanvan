@@ -25,12 +25,13 @@ function ErrorLogin({ message, close, type = false }) {
             <h2 className="font-bold text-3xl">Success</h2>
           )}
 
-          <p className="text-xl">{message}</p>
+          <p className="text-xl uppercase">{message}</p>
         </div>
 
         <button
           className="px-10 py-2 bg-mainPurple text-white font-bold"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             close("");
           }}
         >

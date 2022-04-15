@@ -3,9 +3,8 @@ import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import Movie from "./Movie";
 import { Link } from "react-router-dom";
 
-function MoviesSection2({ type, categories, moviesDB }) {
+function MoviesSection2({ type, categories, movies, rate }) {
   const [rating, setRating] = useState(null);
-  const movies = moviesDB.upComming;
   const sliderRef = useRef(null);
   const next = () => {
     let scrollAmount = 0;
@@ -45,7 +44,7 @@ function MoviesSection2({ type, categories, moviesDB }) {
       </div>
       <div ref={sliderRef} className="mt-2 flex gap-10 overflow-x-hidden">
         {movies?.map((movie, index) => {
-          return <Movie key={index} movie={movie} />;
+          return <Movie key={index} movie={movie} rate={rate} />;
         })}
       </div>
       <div

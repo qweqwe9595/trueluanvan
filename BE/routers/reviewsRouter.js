@@ -48,4 +48,35 @@ router.post("/reviewing", authenticateToken, async (req, res) => {
   }
 });
 
+router.patch("/update/:id", authenticateToken, async (req, res) => {
+  try {
+    const reviewsQuery = await reviewsModel.findById(req.params.id);
+    if (req.user.id.toString() !== reviewsQuery.userId.toString())
+      return res.status(400).json({ message: "can only update ur review" });
+    const reviewsQueryUpdate = await reviewsModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    res.status(200).json({ reviewsQueryUpdate });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
+
+router.delete("/delete/:id", authenticateToken, async (req, res) => {
+  try {
+    const reviewsQuery = await reviewsModel.findById(req.params.id);
+    if (req.user.id.toString() !== reviewsQuery.userId.toString())
+      return res.status(400).json({ message: "can only update ur review" });
+    const reviewsQueryDelete = await reviewsModel.findByIdAndDelete(
+      req.params.id
+    );
+    res.status(200).json({ reviewsQueryDelete });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
 module.exports = router;

@@ -27,7 +27,7 @@ function TopNav() {
     <div className="topnav h-14 justify-between flex bg-mainPurpleBlur w-screen max-w-full px-10 text-white items-center top-0 z-50 font-dosis">
       <img
         className="text-mainRed h-fit w-20"
-        src="./stocks/img/logo/logo.svg"
+        src="/stocks/img/logo/logo.svg"
         alt="logo"
       />
       <ul className="md:flex hidden">

@@ -76,12 +76,6 @@ function MoviesSection({ type, categories, movies }) {
       ) : (
         ""
       )}
-      <Link
-        to={"/movielist/popularmovies"}
-        className="flex items-center mt-4 right-2 cursor-pointer float-right"
-      >
-        See all <FaAngleRight className="text-2xl text-mainRed" />
-      </Link>
     </div>
   );
 }
