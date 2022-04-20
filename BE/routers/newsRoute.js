@@ -16,10 +16,22 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-//get all rates
+//get all news
 router.get("/getall", async (req, res) => {
   try {
-    const newsQuery = await newsModel.find();
+    const newsQuery = (await newsModel.find()).reverse();
+    res.status(200).json(newsQuery);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//get a mews
+router.get("/getone/:id", authenticateToken, async (req, res) => {
+  try {
+    const newsQuery = await newsModel
+      .findById(req.params.id)
+      .populate("userId");
     res.status(200).json(newsQuery);
   } catch (err) {
     res.status(500).json(err);
@@ -31,6 +43,7 @@ router.post(
   "/createone",
   [authenticateToken, upload.array("newsImgs", 5)],
   async (req, res) => {
+    console.log(req.files);
     try {
       const newsQuery = await new newsModel({
         ...req.body,
@@ -42,11 +55,11 @@ router.post(
           newsQuery.contents[index].contentImg = req.files[index].filename;
         });
       }
-      console.log(newsQuery);
 
       await newsQuery.save();
       res.status(200).json(newsQuery);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err.message);
     }
   }

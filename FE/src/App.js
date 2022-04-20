@@ -4,7 +4,8 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import MovieDetail from "./pages/MovieDetail";
 import Rates from "./pages/Rates";
-import News from "./pages/News";
+import PostNews from "./pages/News/PostNews";
+import News from "./pages/News/News";
 import { Routes, Route } from "react-router-dom";
 import CeleDetail from "./pages/CeleDetail";
 import { UserContextProvider, UserContext } from "./contexts/User/UserContext";
@@ -15,6 +16,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Admin from "./pages/Admin";
 import Reviews from "./pages/Reviews";
+import TrendingNews from "./pages/News/TrendingNews";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -68,10 +70,12 @@ function App() {
       <Route path="/movielist/:type" element={<MoviesList />} />
       <Route path="/rates" element={<Rates />} />
       <Route path="/reviews" element={<Reviews />} />
-      <Route path="/news/:id" element={<News />} />
-      <Route path="/admin" element={<Admin />}>
-        <Route path="test" element={<div></div>} />
+      <Route path="/news">
+        <Route path=":id" element={<News />} />
+        <Route path="trending" element={<TrendingNews />} />
+        <Route path="postnew" element={<PostNews />} />
       </Route>
+      <Route path="/admin" element={<Admin />}></Route>
       <Route path="/" element={<Home />} />
     </Routes>
   );

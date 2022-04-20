@@ -23,7 +23,9 @@ app.use(
     origin: "*",
   })
 );
+
 app.use(express.json());
+app.use("/images", express.static("imgs/newsImgs"));
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/rates", ratesRouter);

@@ -36,7 +36,9 @@ function TopNav() {
         </Link>
 
         <li className="mr-4 text-lg cursor-pointer">MOVIES</li>
-        <li className="mr-4 text-lg cursor-pointer">TV SHOW</li>
+        <Link to="/news/trending">
+          <li className="mr-4 text-lg cursor-pointer">NEWS</li>
+        </Link>
         <li className="mr-4 text-lg cursor-pointer">CELEBRITIES</li>
         <li className="text-lg cursor-pointer">PAGE</li>
       </ul>
