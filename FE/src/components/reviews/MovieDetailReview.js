@@ -78,7 +78,7 @@ function MovieDetailReview({ movie, setRefresh }) {
           type={true}
         />
       )}
-      {user.token && (
+      {user?.token && (
         <form className="bg-lightPurple rounded-xl p-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 ">

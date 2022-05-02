@@ -14,9 +14,14 @@ import { getCookie } from "./helper/cookie";
 import MoviesList from "./pages/MoviesList";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import Admin from "./pages/Admin";
+import Admin from "./pages/Admin/Admin";
 import Reviews from "./pages/Reviews";
 import TrendingNews from "./pages/News/TrendingNews";
+import Dashboard from "./components/admin/big Component/Dashboard";
+import Setting from "./components/admin/big Component/Setting";
+import Tables from "./components/admin/big Component/News";
+import ReviewsAdmin from "./components/admin/big Component/Reviews";
+import RatesAdmin from "./components/admin/big Component/Rates";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -75,7 +80,13 @@ function App() {
         <Route path="trending" element={<TrendingNews />} />
         <Route path="postnew" element={<PostNews />} />
       </Route>
-      <Route path="/admin" element={<Admin />}></Route>
+      <Route path="/admin" element={<Admin />}>
+        <Route path="" element={<Dashboard />} />
+        <Route path="settings" element={<Setting />} />
+        <Route path="news" element={<Tables />} />
+        <Route path="rates" element={<RatesAdmin />} />
+        <Route path="reviews" element={<ReviewsAdmin />} />
+      </Route>
       <Route path="/" element={<Home />} />
     </Routes>
   );

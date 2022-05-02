@@ -19,9 +19,25 @@ const upload = multer({ storage });
 //get all news
 router.get("/getall", async (req, res) => {
   try {
-    const newsQuery = (await newsModel.find()).reverse();
-    res.status(200).json(newsQuery);
+    let newsQuery = await newsModel.find();
+    if (req.query.query === "user") {
+      newsQuery = await newsModel.find().populate("userId");
+    }
+    res.status(200).json(newsQuery.reverse());
   } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+//get all approved news
+router.get("/getapproved", async (req, res) => {
+  try {
+    let newsQuery = await newsModel.find({ approved: true }).populate("userId");
+
+    res.status(200).json(newsQuery.reverse());
+  } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -31,6 +47,19 @@ router.get("/getone/:id", authenticateToken, async (req, res) => {
   try {
     const newsQuery = await newsModel
       .findById(req.params.id)
+      .populate("userId");
+    res.status(200).json(newsQuery);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//get newss with name
+router.get("/getbyname", authenticateToken, async (req, res) => {
+  try {
+    if (!req.query.name) req.query.name = "";
+    const newsQuery = await newsModel
+      .find({ newsName: { $regex: req.query.name } })
       .populate("userId");
     res.status(200).json(newsQuery);
   } catch (err) {
@@ -52,6 +81,7 @@ router.post(
 
       if (req.body.contents) {
         newsQuery?.contents?.forEach((item, index) => {
+          if (req.files.length === 0) return;
           newsQuery.contents[index].contentImg = req.files[index].filename;
         });
       }
@@ -64,5 +94,32 @@ router.post(
     }
   }
 );
+
+//create a news
+router.patch("/approving/:id", async (req, res) => {
+  try {
+    const newsQuery = await newsModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { approved: true },
+      },
+      { new: true }
+    );
+    res.status(200).json(newsQuery);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err.message);
+  }
+});
+//delete
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const newsQuery = await newsModel.findByIdAndDelete(req.params.id);
+    res.status(200).json(newsQuery);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err.message);
+  }
+});
 
 module.exports = router;

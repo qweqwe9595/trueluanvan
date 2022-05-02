@@ -55,12 +55,38 @@ router.post("/login", async (req, res) => {
 //register
 router.post("/register", async (req, res) => {
   try {
+    const checkQuery = await usersModal.find({ email: req.body.email });
+    if (checkQuery.length !== 0)
+      return res.status(400).json({ message: "exist" });
     const register = await new usersModal(req.body);
     await register.save();
     res.status(200).json({ userInfo: register });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
+  }
+});
+
+//login Facebook
+router.post("/loginfb", async (req, res) => {
+  try {
+    const userQuery = await usersModal.find({
+      email: req.body.email,
+      password: req.body.password,
+    });
+    if (userQuery.length !== 0) {
+      const email = req.body.email;
+      const token = jwt.sign({ email }, process.env.TOKEN_SR);
+      res.status(200).json({ token: token });
+    } else {
+      const register = await new usersModal(req.body);
+      await register.save();
+      const token = jwt.sign({ email: register.email }, process.env.TOKEN_SR);
+      res.status(200).json({ token: token });
+    }
+  } catch (err) {
+    console.log(err.message);
+    res.status(500);
   }
 });
 

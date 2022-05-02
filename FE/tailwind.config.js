@@ -1,12 +1,22 @@
 module.exports = {
+  mode: "jit",
   content: ["./src/**/*.{html,js}"],
+  darkMode: false, // or 'media' or 'class'
+  purge: ["./src/**/*.js", "./public/index.html"],
   theme: {
     extend: {},
+    fontFamily: {
+      sans: ["Roboto", "sans-serif"],
+      serif: ["Roboto Slab", "serif"],
+      body: ["Roboto", "sans-serif"],
+      Nunito: ["Nunito", "sans-serif"],
+      Open: ["Open Sans", "sans-serif"],
+    },
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      mainPurple: "#110E30",
-      lightPurple: "#202258",
+      mainPurple: "#062747",
+      lightPurple: "#020d18",
       mainBlue: "#A1B4F5",
       mainRed: "#DD003F",
       mainRedBlur: "rgb(221, 0, 63,0.5)",
@@ -25,6 +35,7 @@ module.exports = {
       opa: "rgba(0,0,0,0.5)",
       orange: "#F24E1E",
       green: "#008000",
+      pink: "#870164",
     },
   },
   plugins: [],

@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { setCookie, getCookie, eraseCookie } from "../helper/cookie";
 import axios from "axios";
 import ErrorLogin from "../components/dialog/ErrorLogin";
+import FacebookLogin from "react-facebook-login";
 
 import { useNavigate, Link } from "react-router-dom";
 
@@ -20,8 +21,12 @@ function Register() {
     if (!password || !email || !passwordConfirm) {
       return setError("fill all fields");
     }
+
     if (password !== passwordConfirm) {
       return setError("password not match");
+    }
+    if (password.length < 5 || passwordConfirm.length < 5) {
+      return setError("password at least have 6 characters");
     }
 
     try {
@@ -42,7 +47,7 @@ function Register() {
       setCookie("Token", resLogin.data.token, 10);
       navigate("/login");
     } catch (err) {
-      if (err.response.data.code == 11000) {
+      if (err.response.data.message === "exist") {
         setError("already have this email");
       } else {
         setError("something wrong");
@@ -50,6 +55,9 @@ function Register() {
     }
   };
 
+  const responseFacebook = (response) => {
+    console.log(response);
+  };
   return (
     <div
       className="w-screen h-screen flex items-center justify-center"
@@ -97,7 +105,7 @@ function Register() {
           <input
             className="py-2 px-4 rounded-3xl mt-2 focus:outline-0"
             style={{ color: "#413636" }}
-            type="text"
+            type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => {
@@ -108,7 +116,7 @@ function Register() {
           <input
             className="py-2 px-4 rounded-3xl mt-2 focus:outline-0"
             style={{ color: "#413636" }}
-            type="text"
+            type="password"
             placeholder="Password Confirm"
             value={passwordConfirm}
             onChange={(e) => {
@@ -122,12 +130,14 @@ function Register() {
             <span className="float-right">Already Have Account?</span>
           </div>
           <div className="lg:flex hidden flex gap-10 w-full justify-center mt-10">
-            <div className="py-1 px-14 bg-white rounded-xl cursor-pointer">
-              <FcGoogle style={{ color: "#059BE5", fontSize: "40px" }} />
-            </div>
-            <div className="py-1 px-14 bg-white rounded-xl cursor-pointer">
-              <FaFacebook style={{ color: "#059BE5", fontSize: "40px" }} />
-            </div>
+            <FacebookLogin
+              appId="304504911838312"
+              autoLoad={true}
+              fields="name,email,picture"
+              callback={responseFacebook}
+              cssClass="text-blue-500 flex items-center gap-2 py-4 px-4 bg-white rounded-3xl cursor-pointer flex items-center"
+              icon="fa-facebook"
+            />
           </div>
           <button
             className="lg:hidden absolute py-1 px-16 bg-mainRed text-2xl font-bold rounded-2xl cursor-pointer"
@@ -142,12 +152,14 @@ function Register() {
           </button>
         </form>
         <div className="flex mt-16 gap-10 lg:hidden">
-          <div className="py-2 px-14 bg-white rounded-3xl cursor-pointer">
-            <FcGoogle style={{ color: "#059BE5", fontSize: "40px" }} />
-          </div>
-          <div className="py-2 px-14 bg-white rounded-3xl cursor-pointer">
-            <FaFacebook style={{ color: "#059BE5", fontSize: "40px" }} />
-          </div>
+          <FacebookLogin
+            appId="304504911838312"
+            autoLoad={true}
+            fields="name,email,picture"
+            callback={responseFacebook}
+            cssClass="text-blue-500 flex items-center gap-2 py-4 px-4 bg-white rounded-3xl cursor-pointer flex items-center"
+            icon="fa-facebook"
+          />
         </div>
       </div>
     </div>

@@ -31,13 +31,15 @@ function MovieDetailHero({ movie }) {
         `http://localhost:5000/api/rates/usersmovierate/${movie.id}`,
         { headers: { token } }
       );
-      setYourRating(res.data.point);
+      setYourRating(res.data?.point);
       //averagePoint
       const res2 = await axios.get(
         `http://localhost:5000/api/rates/movie/average/${movie.id}`
       );
       setAveragePoint(res2.data.averagePoint);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   const addToWatchLater = async () => {
@@ -150,7 +152,7 @@ function MovieDetailHero({ movie }) {
                 <SiThemoviedatabase className="text-yellow text-xl md:text-mainRed md:text-3xl" />
               </div>
             </div>
-            {user.token && (
+            {user?.token && (
               <div
                 className="flex items-center gap-2 md:flex-col md:items-start cursor-pointer"
                 onClick={() => {

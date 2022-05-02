@@ -17,7 +17,7 @@ function AdminNews() {
     try {
       let files = [];
       let bodyFormData = new FormData();
-      bodyFormData.append("newsName", newsName);
+      bodyFormData.append("newsName", newsName.toLocaleLowerCase());
       bodyFormData.append("newsShortContent", summary);
       data.forEach((content, index) => {
         bodyFormData.append(
@@ -73,7 +73,7 @@ function AdminNews() {
             {summary}
           </h3>
           <p className="text-right ">
-            By <span className="text-mainRed outline-0 ">{user.email}</span>
+            By <span className="text-mainRed outline-0 ">{user?.email}</span>
           </p>
         </div>
         <div className="w-7/12 border-b border-mainRedBlur m-auto"></div>

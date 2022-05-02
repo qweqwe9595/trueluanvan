@@ -6,7 +6,6 @@ import { TheMovieDbProvider } from "./contexts/TMDB/theMovieDbContext";
 import { ConfirmDialogContextProvider } from "./contexts/Dialog/dialogContext";
 import { BrowserRouter } from "react-router-dom";
 import { UserContextProvider } from "./contexts/User/UserContext";
-
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

@@ -99,6 +99,9 @@ function Profile() {
       <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
         <PollGenerality />
       </div>
+      <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
+        All your news hear
+      </div>
       {/* <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
         <MoviesSection2 type="Tv show" categories={["action", "romance"]} />
       </div> */}

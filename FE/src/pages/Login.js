@@ -5,6 +5,7 @@ import axios from "axios";
 import { setCookie } from "../helper/cookie";
 import ErrorLogin from "../components/dialog/ErrorLogin";
 import { useNavigate, Link } from "react-router-dom";
+import FacebookLogin from "react-facebook-login";
 
 function Login() {
   let navigate = useNavigate();
@@ -30,10 +31,24 @@ function Login() {
       navigate("/");
     } catch (err) {
       if (err.response.data.message == "wrong user") {
-        console.log("");
         return setError("wrong user");
       }
     }
+  };
+
+  const responseFacebook = async (response) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/loginfb", {
+        userName: response.name,
+        email: response.id,
+        password: response.id,
+        img: response.picture.data.url,
+      });
+      setCookie("Token", res.data.token, 10);
+      navigate("/");
+    } catch (error) {}
+
+    console.log(response);
   };
 
   return (
@@ -107,12 +122,14 @@ function Login() {
             <span className="float-right">Forgot password?</span>
           </div>
           <div className="lg:flex hidden flex gap-10 w-full justify-center mt-10">
-            <div className="py-1 px-14 bg-white rounded-xl cursor-pointer">
-              <FcGoogle style={{ color: "#059BE5", fontSize: "40px" }} />
-            </div>
-            <div className="py-1 px-14 bg-white rounded-xl cursor-pointer">
-              <FaFacebook style={{ color: "#059BE5", fontSize: "40px" }} />
-            </div>
+            <FacebookLogin
+              appId="304504911838312"
+              autoLoad={true}
+              fields="name,email,picture"
+              callback={responseFacebook}
+              cssClass="text-blue-500 flex items-center gap-2 py-4 px-4 bg-white rounded-3xl cursor-pointer flex items-center"
+              icon="fa-facebook"
+            />
           </div>
           <button
             className="lg:hidden absolute py-1 px-16 bg-mainRed text-2xl font-bold rounded-2xl cursor-pointer"
@@ -129,12 +146,14 @@ function Login() {
           </button>
         </form>
         <div className="flex mt-16 gap-10 lg:hidden">
-          <div className="py-2 px-14 bg-white rounded-3xl cursor-pointer">
-            <FcGoogle style={{ color: "#059BE5", fontSize: "40px" }} />
-          </div>
-          <div className="py-2 px-14 bg-white rounded-3xl cursor-pointer">
-            <FaFacebook style={{ color: "#059BE5", fontSize: "40px" }} />
-          </div>
+          <FacebookLogin
+            appId="304504911838312"
+            autoLoad={true}
+            fields="name,email,picture"
+            callback={responseFacebook}
+            cssClass="text-blue-500 flex items-center gap-2 py-4 px-4 bg-white rounded-3xl cursor-pointer flex items-center"
+            icon="fa-facebook"
+          />
         </div>
       </div>
     </div>

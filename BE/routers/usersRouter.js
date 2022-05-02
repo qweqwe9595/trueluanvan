@@ -4,23 +4,42 @@ const jwt = require("jsonwebtoken");
 const authenticateToken = require("../middleware/authentica");
 require("dotenv").config();
 
-//update user
-router.patch("/:id", authenticateToken, async (req, res) => {
-  try {
-    const userQuery = await usersModal.findById(req.params.id);
-    if (req.user[0]._id !== userQuery._id)
-      return res.status(500).send("u only can update ur own account");
-    const userUpdateQuery = await usersModal.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        $set: req.body,
-      }
-    );
-    res.status(200).json(userUpdateQuery);
-  } catch (err) {
-    res.status(500);
-  }
+//multer
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./imgs/newsImgs");
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + file.originalname);
+  },
 });
+const upload = multer({ storage });
+
+//update user
+router.patch(
+  "/:id",
+  [authenticateToken, upload.single("img")],
+  async (req, res) => {
+    try {
+      const userUpdateQuery = await usersModal.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          $set: req.body,
+        },
+        { new: true }
+      );
+      if (req.file) {
+        userUpdateQuery.img = req.file.filename;
+        await userUpdateQuery.save();
+      }
+      res.status(200).json(userUpdateQuery);
+    } catch (err) {
+      res.status(500).json(err.message);
+    }
+  }
+);
 
 router.get("/", authenticateToken, async (req, res) => {
   try {

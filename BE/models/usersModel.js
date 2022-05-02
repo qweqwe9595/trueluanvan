@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 const usersSchema = new mongoose.Schema(
   {
+    userName: { type: String },
     email: { type: String, max: 50, unique: true },
     password: { type: String },
-    profilePicture: { type: String },
-    favourites: { type: Array },
+    img: { type: String },
     isAdmin: { type: Boolean, default: false },
     sex: { type: Boolean },
     dateOfBirth: { type: Date },

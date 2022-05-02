@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { FaSearch, FaUserAlt } from "react-icons/fa";
 import { AiFillCaretDown } from "react-icons/ai";
 import SearchBox from "./smallSections/SearchBox";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { getCookie, eraseCookie } from "../helper/cookie";
+import { UserContext } from "../contexts/User/UserContext";
 
 function TopNav() {
   const [userName, setUserName] = useState();
@@ -131,9 +132,15 @@ function Menu({ menuHamburger }) {
 }
 
 function MenuUser({ userId }) {
+  const [user] = useContext(UserContext);
+  const [isAdmin, setIsAdmin] = useState(false);
   const logOut = () => {
     eraseCookie("Token");
   };
+  useEffect(() => {
+    if (!user) return;
+    setIsAdmin(user.isAdmin);
+  }, [user]);
   return (
     <ul className="w-32 bg-black flex flex-col p-4 text-white">
       <Link to={`/profile/${userId}`}>
@@ -141,6 +148,11 @@ function MenuUser({ userId }) {
           Your Account
         </li>
       </Link>
+      {isAdmin && (
+        <Link to={`/admin`}>
+          <li className="font-bold cursor-pointer hover:underline">Admin</li>
+        </Link>
+      )}
 
       <li
         className="font-bold cursor-pointer hover:underline"

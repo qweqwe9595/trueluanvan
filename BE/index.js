@@ -11,6 +11,7 @@ const userRouter = require("./routers/usersRouter");
 const reviewsRouter = require("./routers/reviewsRouter");
 const movieListRouter = require("./routers/movieListRoute");
 const newsRouter = require("./routers/newsRoute");
+const statisticsRoute = require("./routers/statisticsRoute");
 
 mongoose.connect(process.env.connectString, { useNewUrlParser: true }, () => {
   console.log("connect to mongodb");
@@ -32,6 +33,7 @@ app.use("/api/rates", ratesRouter);
 app.use("/api/reviews", reviewsRouter);
 app.use("/api/movielist", movieListRouter);
 app.use("/api/news", newsRouter);
+app.use("/api/statistics", statisticsRoute);
 
 app.listen(5000, () => {
   console.log("running 5000");

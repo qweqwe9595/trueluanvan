@@ -18,7 +18,6 @@ const TMDB_TOKEN = "500cc81d4dbf1d8c0a24c0ee8576f22c";
 function Home() {
   const [movies, dispatch] = useContext(TheMovieDBContext);
   const [dialog, setDialog] = useContext(ConfirmDialogContext);
-  // console.log(movies);
   useEffect(async () => {
     let popularMovies = await getPopular();
     let popularMovies2 = await getPopular2();

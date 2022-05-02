@@ -15,6 +15,7 @@ function NewsClient() {
           `http://localhost:5000/api/news/getone/${newsId}`,
           { headers: { token: user.token } }
         );
+        console.log(res);
         setNews(res.data);
       } catch (error) {
         console.log(error.response);
@@ -26,10 +27,11 @@ function NewsClient() {
 
   return (
     <div className="w-full flex flex-col gap-4 bg-lightPurple py-4 rounded-xl mt-4">
-      <p className="text-center text-2xl">{news?.Name}</p>
       <div className="flex flex-col gap-4">
         <div className="w-full px-8 py-2">
-          <h1 className="text-3xl text-center text-mainRed outline-0">asd</h1>
+          <h1 className="text-3xl text-center text-mainRed outline-0">
+            {news?.newsName}
+          </h1>
           <h3 className="text-xl outline-0">{news?.newsShortContent}</h3>
           <p className="text-right ">
             By{" "}

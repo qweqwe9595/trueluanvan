@@ -1,11 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { FaAngleRight, FaAngleLeft, FaRegPlayCircle } from "react-icons/fa";
 import { newdummys } from "../../dummy/newdummys";
+import axios from "axios";
 
 function Hero() {
   const [current, setCurrent] = useState(0);
   const length = newdummys.length;
+  const [news, setNews] = useState([]);
+  console.log(news);
 
+  useEffect(() => {
+    const getNews = async () => {
+      const res = await axios.get("http://localhost:5000/api/news/getall");
+      const newsFilter = res.data.filter((item, i) => {
+        return i < 3;
+      });
+      setNews(newsFilter);
+    };
+    getNews();
+  }, []);
+
+  useEffect(() => {
+    const loop = setInterval(() => {
+      next();
+    }, 10000);
+    return () => clearInterval(loop);
+  }, [current]);
   const next = () => {
     if (current === length - 1) {
       setCurrent(0);
@@ -22,14 +42,6 @@ function Hero() {
       setCurrent(current - 1);
     }
   };
-
-  useEffect(() => {
-    const loop = setInterval(() => {
-      next();
-    }, 10000);
-    return () => clearInterval(loop);
-  }, [current]);
-
   return (
     <div
       className="xl:px-28 w-screen max-w-full h-650px flex items-center pt-14 bg-lightPurpleBlur px-2"
@@ -41,7 +53,12 @@ function Hero() {
       }}
     >
       <div className="w-full md:w-8/12 relative h-80 ">
-        {newdummys.map((e, index) => {
+        {news.map((e, index) => {
+          let img = e?.contents[0]?.contentImg;
+          if (!e?.contents[0]?.contentImg) {
+            img = `defaultNewsImg.jpg`;
+          }
+
           return (
             <div
               key={index}
@@ -50,15 +67,15 @@ function Hero() {
                 " absolute bg-no-repeat shrink-0 w-full h-full ease-in-out duration-500 rounded flex justify-center items-end"
               }
               style={{
-                backgroundImage: `url("${e.img}")`,
+                backgroundImage: `url("http://localhost:5000/images/${img}")`,
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
               }}
             >
               <div className="text-white bg-lightPurpleBlur w-10/12 h-fit shrink-0 rounded mb-4 border-l-4 border-mainRed pl-4 py-4">
-                <h1 className="text-2xl font-bold">{e.newsName}</h1>
-                <h3 className="">{e.overview}</h3>
+                <h1 className="text-2xl font-bold">{e?.newsName}</h1>
+                <h3 className="">{e?.newsShortContent}</h3>
               </div>
             </div>
           );
@@ -79,7 +96,12 @@ function Hero() {
         </button>
       </div>
       <div className="hidden h-80 md:flex md:flex flex-col ml-3 justify-between w-4/12">
-        {newdummys.map((item, index) => {
+        {news.map((item, index) => {
+          let img = item?.contents[0]?.contentImg;
+          if (!item?.contents[0]?.contentImg) {
+            img = `defaultNewsImg.jpg`;
+          }
+
           return (
             <div
               key={index}
@@ -87,13 +109,18 @@ function Hero() {
             >
               <div className="flex h-32 items-center w-40 shrink-0 ">
                 <img
-                  src={item.img}
+                  src={`http://localhost:5000/images/${img}`}
                   alt=""
                   className="h-full object-cover w-full "
                 />
               </div>
               <div className="flex flex-col text-white justify-center ml-1">
-                <h1 className="font-bold text-sm">{item.newsName}</h1>
+                <h1 className="font-bold text-sm">{item?.newsName}</h1>
+                <h1 className="text-sm">
+                  {!item?.newsShortContent.length > 30
+                    ? item?.newsShortContent
+                    : `${item?.newsShortContent.slice(0, 30)}....`}
+                </h1>
               </div>
             </div>
           );
