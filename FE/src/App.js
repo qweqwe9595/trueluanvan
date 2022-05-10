@@ -22,6 +22,7 @@ import Setting from "./components/admin/big Component/Setting";
 import Tables from "./components/admin/big Component/News";
 import ReviewsAdmin from "./components/admin/big Component/Reviews";
 import RatesAdmin from "./components/admin/big Component/Rates";
+import Polls from "./pages/Polls";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -78,7 +79,7 @@ function App() {
       <Route path="/news">
         <Route path=":id" element={<News />} />
         <Route path="trending" element={<TrendingNews />} />
-        <Route path="postnew" element={<PostNews />} />
+        <Route path="postnew" element={<PostNews />} />a
       </Route>
       <Route path="/admin" element={<Admin />}>
         <Route path="" element={<Dashboard />} />
@@ -86,6 +87,8 @@ function App() {
         <Route path="news" element={<Tables />} />
         <Route path="rates" element={<RatesAdmin />} />
         <Route path="reviews" element={<ReviewsAdmin />} />
+      </Route>
+      <Route path="/polls" element={<Polls />}>
       </Route>
       <Route path="/" element={<Home />} />
     </Routes>

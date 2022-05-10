@@ -80,9 +80,14 @@ router.post("/rating", authenticateToken, async (req, res) => {
       movieId: req.body.movieId,
       userId: req.user._id,
     });
-    if (movieQuery && req.body.point === 0) {
-      const deleteQuery = await ratesModel.findByIdAndDelete(movieQuery._id);
-      return res.status(200).json({ deleteQuery });
+    if (!movieQuery || req.body.point === 0) {
+      const newRateQuery = await new ratesModel({
+        ...req.body,
+        ...{ userId: req.user._id },
+      });
+      await newRateQuery.save();
+
+      return res.status(200).json({ newRateQuery });
     }
     if (movieQuery) {
       const movieUpdate = await ratesModel.findOneAndUpdate(
@@ -97,12 +102,6 @@ router.post("/rating", authenticateToken, async (req, res) => {
       );
       return res.status(200).json(movieUpdate);
     }
-    const newRateQuery = await new ratesModel({
-      ...req.body,
-      ...{ userId: req.user._id },
-    });
-    newRateQuery.save();
-    res.status(200).json(newRateQuery);
   } catch (err) {
     res.status(500).json(err);
     console.log(err);

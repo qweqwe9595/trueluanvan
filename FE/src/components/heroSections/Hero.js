@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaAngleRight, FaAngleLeft, FaRegPlayCircle } from "react-icons/fa";
 import { newdummys } from "../../dummy/newdummys";
+import { Link } from "react-router-dom";
 import axios from "axios";
+
 
 function Hero() {
   const [current, setCurrent] = useState(0);
   const length = newdummys.length;
   const [news, setNews] = useState([]);
-  console.log(news);
 
   useEffect(() => {
     const getNews = async () => {
@@ -58,12 +59,12 @@ function Hero() {
           if (!e?.contents[0]?.contentImg) {
             img = `defaultNewsImg.jpg`;
           }
-
           return (
-            <div
+            <Link
+            to={`/news/${e._id}`}
               key={index}
               className={
-                (current === index ? "opacity-100" : "opacity-0") +
+                (current === index ? "visible opacity-100" : "invisible opacity-0") +
                 " absolute bg-no-repeat shrink-0 w-full h-full ease-in-out duration-500 rounded flex justify-center items-end"
               }
               style={{
@@ -72,12 +73,13 @@ function Hero() {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
               }}
+              onClick={(event)=>{event.stopPropagation();}}
             >
               <div className="text-white bg-lightPurpleBlur w-10/12 h-fit shrink-0 rounded mb-4 border-l-4 border-mainRed pl-4 py-4">
                 <h1 className="text-2xl font-bold">{e?.newsName}</h1>
                 <h3 className="">{e?.newsShortContent}</h3>
               </div>
-            </div>
+            </Link>
           );
         })}
 
@@ -103,7 +105,8 @@ function Hero() {
           }
 
           return (
-            <div
+            <Link
+            to={`/news/${item._id}`}
               key={index}
               className="flex hover:bg-mainRedBlur py-1 px-2 cursor-pointer items-center"
             >
@@ -122,7 +125,7 @@ function Hero() {
                     : `${item?.newsShortContent.slice(0, 30)}....`}
                 </h1>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

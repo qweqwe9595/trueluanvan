@@ -13,11 +13,13 @@ import { TheMovieDBContext } from "../contexts/TMDB/theMovieDbContext";
 import { ConfirmDialogContext } from "../contexts/Dialog/dialogContext";
 import axios from "axios";
 import { getCookie } from "../helper/cookie";
+import { UserContext } from "../contexts/User/UserContext";
 const TMDB_TOKEN = "500cc81d4dbf1d8c0a24c0ee8576f22c";
 
 function Home() {
   const [movies, dispatch] = useContext(TheMovieDBContext);
   const [dialog, setDialog] = useContext(ConfirmDialogContext);
+  const [user]=useContext(UserContext)
   useEffect(async () => {
     let popularMovies = await getPopular();
     let popularMovies2 = await getPopular2();
@@ -26,32 +28,38 @@ function Home() {
     //push VIDEOS into upcomming
 
     const upCommingMoviesArray = await upCommingMovies.upComming.map(
-      async (movie) => {
+      async (movie) => { 
+        if(!user) return movie
         return await joinVideos(movie.id);
       }
     );
     const popular2MoviesArray = await popularMovies2.popular2.map(
       async (movie) => {
+        if(!user) return movie
         return await joinVideos(movie.id);
       }
     );
     const popularMoviesArray = await popularMovies.popular.map(
       async (movie) => {
+        if(!user) return movie
         return await joinVideos(movie.id);
       }
     );
     const upCommingMoviesArrayJoinWatchList = await upCommingMovies.upComming.map(
       async (movie) => {
+        if(!user) return movie
         return await joinWatchList(movie);
       }
     );
     const popular2MoviesArrayJoinWatchList = await popularMovies2.popular2.map(
       async (movie) => {
+        if(!user) return movie
         return await joinWatchList(movie);
       }
     );
     const popularMoviesArrayJoinWatchList = await popularMovies.popular.map(
       async (movie) => {
+        if(!user) return movie
         return await joinWatchList(movie);
       }
     );

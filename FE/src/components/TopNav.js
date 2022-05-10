@@ -8,11 +8,12 @@ import { getCookie, eraseCookie } from "../helper/cookie";
 import { UserContext } from "../contexts/User/UserContext";
 
 function TopNav() {
-  const [userName, setUserName] = useState();
   const [userId, setUserId] = useState();
   const [menuHamburger, setMenuHamburger] = useState(false);
   const [menuUser, setMenuUser] = useState(false);
   const [searching, setSearching] = useState(false);
+  const [user]= useContext(UserContext)
+
   const userToken = getCookie("Token");
 
   useEffect(async () => {
@@ -64,7 +65,7 @@ function TopNav() {
             }}
           >
             <FaUserAlt className="mr-1"></FaUserAlt>
-            <span>{userName}</span>
+            <span>{user?.userName || user?.email}</span>
             <AiFillCaretDown />
             {menuUser && (
               <div className="absolute top-10 left-0">
@@ -132,9 +133,10 @@ function Menu({ menuHamburger }) {
 }
 
 function MenuUser({ userId }) {
-  const [user] = useContext(UserContext);
+  const [user,setUser] = useContext(UserContext);
   const [isAdmin, setIsAdmin] = useState(false);
   const logOut = () => {
+    setUser(null)
     eraseCookie("Token");
   };
   useEffect(() => {

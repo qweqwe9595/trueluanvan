@@ -12,6 +12,7 @@ const usersSchema = new mongoose.Schema(
     messageFromAdmin: { type: String },
     rates: { type: Array },
     reviews: { type: Array },
+    polls:[{type:String,ref:`pollsModel`}]
   },
   { timestamps: true }
 );

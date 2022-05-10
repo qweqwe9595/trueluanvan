@@ -46,9 +46,9 @@ function Login() {
       });
       setCookie("Token", res.data.token, 10);
       navigate("/");
-    } catch (error) {}
-
-    console.log(response);
+    } catch (error) {
+    
+    }
   };
 
   return (
@@ -124,7 +124,6 @@ function Login() {
           <div className="lg:flex hidden flex gap-10 w-full justify-center mt-10">
             <FacebookLogin
               appId="304504911838312"
-              autoLoad={true}
               fields="name,email,picture"
               callback={responseFacebook}
               cssClass="text-blue-500 flex items-center gap-2 py-4 px-4 bg-white rounded-3xl cursor-pointer flex items-center"
@@ -148,7 +147,6 @@ function Login() {
         <div className="flex mt-16 gap-10 lg:hidden">
           <FacebookLogin
             appId="304504911838312"
-            autoLoad={true}
             fields="name,email,picture"
             callback={responseFacebook}
             cssClass="text-blue-500 flex items-center gap-2 py-4 px-4 bg-white rounded-3xl cursor-pointer flex items-center"

@@ -69,12 +69,6 @@ function MoviesSection3({ type, categories, movies, rate = true }) {
                     );
                 })}
               </div>
-              {rate && (
-                <div className="flex items-center">
-                  <span className="mr-2">10/10</span>
-                  <FaStar className="text-mainRed"></FaStar>
-                </div>
-              )}
             </Link>
           );
         })}
