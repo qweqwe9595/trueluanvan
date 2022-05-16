@@ -19,7 +19,7 @@ const TMDB_TOKEN = "500cc81d4dbf1d8c0a24c0ee8576f22c";
 function Home() {
   const [movies, dispatch] = useContext(TheMovieDBContext);
   const [dialog, setDialog] = useContext(ConfirmDialogContext);
-  const [user]=useContext(UserContext)
+  const [user] = useContext(UserContext);
   useEffect(async () => {
     let popularMovies = await getPopular();
     let popularMovies2 = await getPopular2();
@@ -28,38 +28,35 @@ function Home() {
     //push VIDEOS into upcomming
 
     const upCommingMoviesArray = await upCommingMovies.upComming.map(
-      async (movie) => { 
-        if(!user) return movie
+      async (movie) => {
         return await joinVideos(movie.id);
       }
     );
     const popular2MoviesArray = await popularMovies2.popular2.map(
       async (movie) => {
-        if(!user) return movie
         return await joinVideos(movie.id);
       }
     );
     const popularMoviesArray = await popularMovies.popular.map(
       async (movie) => {
-        if(!user) return movie
+        if (!user) return movie;
         return await joinVideos(movie.id);
       }
     );
-    const upCommingMoviesArrayJoinWatchList = await upCommingMovies.upComming.map(
-      async (movie) => {
-        if(!user) return movie
+    const upCommingMoviesArrayJoinWatchList =
+      await upCommingMovies.upComming.map(async (movie) => {
+        if (!user) return movie;
         return await joinWatchList(movie);
-      }
-    );
+      });
     const popular2MoviesArrayJoinWatchList = await popularMovies2.popular2.map(
       async (movie) => {
-        if(!user) return movie
+        if (!user) return movie;
         return await joinWatchList(movie);
       }
     );
     const popularMoviesArrayJoinWatchList = await popularMovies.popular.map(
       async (movie) => {
-        if(!user) return movie
+        if (!user) return movie;
         return await joinWatchList(movie);
       }
     );
@@ -92,7 +89,6 @@ function Home() {
     //set celeb
     dispatch({ type: "SET_CELEBRITIES", payload: celebrities });
   }, []);
-  console.log(movies);
   return (
     <div className="flex flex-col w-screen max-w-full bg-mainPurple text-white ">
       {dialog.movieName ? (
@@ -126,7 +122,7 @@ function Home() {
           </div>
         </div>
         <div className="w-full px-4 lg:px-20">
-          <Hero2 movies={movies?.upComming}></Hero2>
+          <Hero2 movies={movies?.popular2}></Hero2>
         </div>
         <div className="w-full px-4 lg:px-20 bg-lightPurple">
           <MoviesSection3

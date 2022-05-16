@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 //get all
-router.get("/getall", authenticateToken, async (req, res) => {
+router.get("/getall", async (req, res) => {
   try {
     const pollsQuery = await pollsModel.find().populate({
       path: "options",
@@ -36,7 +36,7 @@ router.get("/getall", authenticateToken, async (req, res) => {
 });
 
 //get one
-router.get("/getone/:id", authenticateToken, async (req, res) => {
+router.get("/getone/:id", async (req, res) => {
   try {
     const pollsQuery = await pollsModel.findById(req.params.id).populate({
       path: "options",
@@ -51,15 +51,22 @@ router.get("/getone/:id", authenticateToken, async (req, res) => {
 });
 
 //create a polls
-router.post("/createone", authenticateToken, async (req, res) => {
-  try {
-    const pollsQuery = await new pollsModel(req.body);
-    await pollsQuery.save();
-    res.status(200).json(pollsQuery);
-  } catch (err) {
-    res.status(500).json(err.message);
+router.post(
+  "/createone",
+  [authenticateToken, upload.single("pollImg")],
+  async (req, res) => {
+    try {
+      const pollsQuery = await new pollsModel(req.body);
+      if (req.file) {
+        pollsQuery.pollImg = req.file.filename;
+      }
+      await pollsQuery.save();
+      res.status(200).json(pollsQuery);
+    } catch (err) {
+      res.status(500).json(err.message);
+    }
   }
-});
+);
 
 //add question for polls
 router.post(
@@ -85,15 +92,30 @@ router.post(
 //add a vote
 router.post("/addvote", authenticateToken, async (req, res) => {
   try {
+    let voted = false;
+
+    const option = await optionsModel.findById(req.body.optionId);
+
+    const poll = await pollsModel.findById(option.pollId);
+
     const pollVoteQuery = await new pollvoteModel({
       ...req.body,
       userId: req.user._id,
+    });
+
+    poll?.options?.forEach(async (item) => {
+      const optionQuery = await optionsModel
+        .findById(item)
+        .populate("optionVotes");
+      voted = optionQuery.optionVotes.find(
+        (item) => item.userId === req.user._id.toString()
+      );
     });
     await optionsModel.findByIdAndUpdate(req.body.optionId, {
       $push: { optionVotes: pollVoteQuery._id },
     });
     await pollVoteQuery.save();
-    res.status(200).json(pollVoteQuery);
+    res.status(200).json({ pollVoteQuery, voted });
   } catch (err) {
     res.status(500).json(err.message);
   }
@@ -112,6 +134,7 @@ router.patch(
         },
         { new: true }
       );
+      console.log(req.body);
       if (req.file) {
         pollsQuery.pollImg = req.file.filename;
         await pollsQuery.save();

@@ -12,7 +12,7 @@ function TopNav() {
   const [menuHamburger, setMenuHamburger] = useState(false);
   const [menuUser, setMenuUser] = useState(false);
   const [searching, setSearching] = useState(false);
-  const [user]= useContext(UserContext)
+  const [user] = useContext(UserContext);
 
   const userToken = getCookie("Token");
 
@@ -21,7 +21,6 @@ function TopNav() {
     const res = await axios.get(`http://localhost:5000/api/users`, {
       headers: { token: `bearer ${userToken}` },
     });
-    setUserName(res.data.data.email);
     setUserId(res.data.data._id);
   }, []);
 
@@ -42,7 +41,9 @@ function TopNav() {
           <li className="mr-4 text-lg cursor-pointer">NEWS</li>
         </Link>
         <li className="mr-4 text-lg cursor-pointer">CELEBRITIES</li>
-        <li className="text-lg cursor-pointer">PAGE</li>
+        <Link to="/polls/trending">
+          <li className="text-lg cursor-pointer">POLLS</li>
+        </Link>
       </ul>
       <ul className="md:flex hidden flex items-center">
         <li>
@@ -133,10 +134,10 @@ function Menu({ menuHamburger }) {
 }
 
 function MenuUser({ userId }) {
-  const [user,setUser] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
   const [isAdmin, setIsAdmin] = useState(false);
   const logOut = () => {
-    setUser(null)
+    setUser(null);
     eraseCookie("Token");
   };
   useEffect(() => {

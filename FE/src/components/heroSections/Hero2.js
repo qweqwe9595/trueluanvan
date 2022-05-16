@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaAngleRight, FaAngleUp, FaAngleDown } from "react-icons/fa";
 
 function Hero2({ movies }) {
+  console.log(movies);
   const sliderRef = useRef(null);
   const [youtubeURL, setYourubeURL] = useState("");
   useEffect(() => {

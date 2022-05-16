@@ -23,6 +23,7 @@ import Tables from "./components/admin/big Component/News";
 import ReviewsAdmin from "./components/admin/big Component/Reviews";
 import RatesAdmin from "./components/admin/big Component/Rates";
 import Polls from "./pages/Polls";
+import PollsDetail from "./pages/PollsDetail";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -88,7 +89,9 @@ function App() {
         <Route path="rates" element={<RatesAdmin />} />
         <Route path="reviews" element={<ReviewsAdmin />} />
       </Route>
-      <Route path="/polls" element={<Polls />}>
+      <Route path="/polls">
+        <Route path="trending" element={<Polls />} />
+        <Route path=":id" element={<PollsDetail />} />
       </Route>
       <Route path="/" element={<Home />} />
     </Routes>

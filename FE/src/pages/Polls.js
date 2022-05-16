@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 import TopNav from "../components/TopNav";
 import Footer from "../components/Footer";
 import MovieDetailWall from "../components/smallSections/MovieDetailWall";
-import PollsDetail from '../components/polls/PollsDetail';
+import PollsList from "../components/polls/Polls";
 
 function Polls() {
   return (
@@ -10,13 +10,13 @@ function Polls() {
       <TopNav></TopNav>
       <div className="w-screen max-w-full px-10 lg:px-60 mt-10">
         <MovieDetailWall content={"ALL POLLS"} />
-        <PollsDetail/>
+        <PollsList />
       </div>
       <div className="w-screen max-w-full mt-10">
         <Footer />
       </div>
     </div>
-  )
+  );
 }
 
-export default Polls
+export default Polls;

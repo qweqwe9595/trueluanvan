@@ -12,7 +12,7 @@ const reviewsRouter = require("./routers/reviewsRouter");
 const movieListRouter = require("./routers/movieListRoute");
 const newsRouter = require("./routers/newsRoute");
 const statisticsRoute = require("./routers/statisticsRoute");
-const pollsRoute = require("./routers/pollsRoute")
+const pollsRoute = require("./routers/pollsRoute");
 
 mongoose.connect(process.env.connectString, { useNewUrlParser: true }, () => {
   console.log("connect to mongodb");
