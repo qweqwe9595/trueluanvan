@@ -25,6 +25,7 @@ function MovieDetailHero({ movie }) {
   }, [movie, user]);
 
   useEffect(async () => {
+    if (!getCookie("Token")) return;
     try {
       const token = `bearer ${getCookie("Token")}`;
       const res = await axios.get(
@@ -32,7 +33,13 @@ function MovieDetailHero({ movie }) {
         { headers: { token } }
       );
       setYourRating(res.data?.point);
-      //averagePoint
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  useEffect(async () => {
+    try {
       const res2 = await axios.get(
         `http://localhost:5000/api/rates/movie/average/${movie.id}`
       );
@@ -94,7 +101,7 @@ function MovieDetailHero({ movie }) {
               <FiPlay className="text-mainRed text-4xl text-center" />
               Play trailer
             </div>
-            {addWatchLater ? (
+            {addWatchLater && getCookie("Token") ? (
               <div
                 className="flex px-3 py-1 border-2 border-mainRed w-fit rounded-3xl items-center font-bold cursor-pointer text-sm bg-mainRedBlur text-center"
                 onClick={() => removeFromWatchLater()}
@@ -103,6 +110,9 @@ function MovieDetailHero({ movie }) {
                 <span>Remove From Watch Later</span>
               </div>
             ) : (
+              ""
+            )}
+            {!addWatchLater && getCookie("Token") ? (
               <div
                 className="flex px-3 py-1 border-2 border-mainRed w-fit rounded-3xl items-center font-bold cursor-pointer text-sm text-center"
                 onClick={() => addToWatchLater()}
@@ -110,32 +120,8 @@ function MovieDetailHero({ movie }) {
                 <FiBookmark className="text-mainRed text-4xl" />
                 <span>Add to Watch Later</span>
               </div>
-            )}
-          </div>
-          <div
-            className="flex px-3 py-3 border-2 border-mainRed w-fit rounded-3xl items-center font-bold cursor-pointer text-sm relative gap-2"
-            onClick={() => setAddList(!addList)}
-            onMouseLeave={() => setAddList(false)}
-          >
-            <FaListAlt className="text-mainRed text-xl" />
-            <span className="flex items-center">
-              Add to List <FaCaretDown className="text-xl" />
-            </span>
-            {addList && (
-              <ul className="absolute top-11 left-0 border border-mainRed px-1 py-2 bg-blackBlur rounded-xl w-full max-h-32 overflow-y-scroll flex flex-col gap-1 z-10">
-                <li className=" px-2 py-1 rounded-xl bg-mainRedBlur hover:bg-mainRed">
-                  watch list
-                </li>
-                <li className=" px-2 py-1 rounded-xl bg-mainRedBlur ">
-                  watch list
-                </li>
-                <li className=" px-2 py-1 rounded-xl bg-mainRedBlur ">
-                  watch list
-                </li>
-                <li className=" px-2 py-1 rounded-xl bg-mainRedBlur ">
-                  watch list
-                </li>
-              </ul>
+            ) : (
+              ""
             )}
           </div>
         </div>

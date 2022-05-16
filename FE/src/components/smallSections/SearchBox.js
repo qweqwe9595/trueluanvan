@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { BiExit } from "react-icons/bi";
 import axios from "axios";
@@ -8,19 +8,6 @@ function SearchBox({ searching, setSearching }) {
   const [searchValue, setSearchValue] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const event = (e) => {
-      if (e.key === "Enter") {
-        navigate(
-          `/movielist/search?string=${searchValue.replaceAll(/\s/g, "")}`
-        );
-        setSearching(false);
-      }
-    };
-    window.addEventListener("keypress", event);
-    return () => window.removeEventListener("keypress", event);
-  }, [searchValue]);
 
   const searchBoxHandler = (e) => {
     e.stopPropagation();
@@ -62,6 +49,18 @@ function SearchBox({ searching, setSearching }) {
             onChange={(e) => {
               setSearchValue(e.target.value);
               typing();
+            }}
+            onKeyPress={(e) => {
+              console.log(e.key);
+              if (e.key == "Enter") {
+                navigate(
+                  `/movielist/search?string=${searchValue.replaceAll(
+                    /\s/g,
+                    ""
+                  )}`
+                );
+                setSearching(false);
+              }
             }}
           />
           <BiExit

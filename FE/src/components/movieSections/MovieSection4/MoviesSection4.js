@@ -94,7 +94,7 @@ function MoviesSection4({ more, moviesProp, resest }) {
           onChange={(e) => sort(e.target.value)}
         >
           <option value="none"></option>
-          {user.token && <option value="web">Web Rating</option>}
+          {user?.token && <option value="web">Web Rating</option>}
 
           <option value="name">Name</option>
           <option value="date">Release Day</option>

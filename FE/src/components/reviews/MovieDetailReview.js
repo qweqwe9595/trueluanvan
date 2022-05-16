@@ -19,7 +19,9 @@ function MovieDetailReview({ movie, setRefresh }) {
   const [reviewSuccess, setReviewSucess] = useState(false);
 
   useEffect(async () => {
+    if (!getCookie("Token")) return;
     const token = `bearer ${getCookie("Token")}`;
+
     const res = await axios.get(
       `http://localhost:5000/api/rates/usersmovierate/${movie.id}`,
       { headers: { token } }
@@ -32,8 +34,7 @@ function MovieDetailReview({ movie, setRefresh }) {
   useEffect(async () => {
     const token = `bearer ${getCookie("Token")}`;
     const res = await axios.get(
-      `http://localhost:5000/api/reviews/movie/${movie.id}`,
-      { headers: { token } }
+      `http://localhost:5000/api/reviews/movie/${movie.id}`
     );
     setReviews(
       res.data.reviewsQuery.reverse().filter((item, index) => index < 5)
