@@ -4,22 +4,25 @@ import { FcGoogle } from "react-icons/fc";
 import { setCookie, getCookie, eraseCookie } from "../helper/cookie";
 import axios from "axios";
 import ErrorLogin from "../components/dialog/ErrorLogin";
-import FacebookLogin from "react-facebook-login";
 
 import { useNavigate, Link } from "react-router-dom";
 
 function Register() {
   let navigate = useNavigate();
   const [email, setEmail] = useState("");
-
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState("");
 
   const signIn = async (e) => {
     e.preventDefault();
-    if (!password || !email || !passwordConfirm) {
+    if (!password || !email || !passwordConfirm || !userName) {
       return setError("fill all fields");
+    }
+
+    if (userName.length < 6) {
+      return setError("user name must have at least 6 character");
     }
 
     if (password !== passwordConfirm) {
@@ -41,10 +44,10 @@ function Register() {
         "http://localhost:5000/api/auth/login",
         {
           email,
+          userName,
           password,
         }
       );
-      setCookie("Token", resLogin.data.token, 10);
       navigate("/login");
     } catch (err) {
       if (err.response.data.message === "exist") {
@@ -55,9 +58,6 @@ function Register() {
     }
   };
 
-  const responseFacebook = (response) => {
-    console.log(response);
-  };
   return (
     <div
       className="w-screen h-screen flex items-center justify-center"
@@ -86,10 +86,24 @@ function Register() {
             backgroundPosition: "center",
             backgroundSize: "cover",
           }}
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
         >
           <h1 className="lg:text-left lg:uppercase text-center text-3xl font-bold">
             Create a new account
           </h1>
+          <label className="ml-2 mt-4">User Name</label>
+          <input
+            className="py-2 px-4 rounded-3xl mt-2 focus:outline-0"
+            style={{ color: "#413636" }}
+            type="text"
+            placeholder="User Name"
+            value={userName}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+          />
           <label className="ml-2 mt-4">Email</label>
           <input
             className="py-2 px-4 rounded-3xl mt-2 focus:outline-0"
@@ -123,21 +137,18 @@ function Register() {
               setPasswordConfirm(e.target.value);
             }}
           />
-          <div className="flex items-center justify-between mt-4 cursor-pointer">
-            <button className="lg:block hidden py-1 px-10 bg-mainRed text-2xl rounded-md cursor-pointer">
+          <div className="block lg:flex items-center justify-between mt-4 cursor-pointer">
+            <button
+              onClick={(e) => {
+                signIn(e);
+              }}
+              className="lg:block hidden py-1 px-10 bg-mainRed text-2xl rounded-md cursor-pointer"
+            >
               Sign In
             </button>
-            <span className="float-right">Already Have Account?</span>
-          </div>
-          <div className="lg:flex hidden flex gap-10 w-full justify-center mt-10">
-            <FacebookLogin
-              appId="304504911838312"
-              autoLoad={true}
-              fields="name,email,picture"
-              callback={responseFacebook}
-              cssClass="text-blue-500 flex items-center gap-2 py-4 px-4 bg-white rounded-3xl cursor-pointer flex items-center"
-              icon="fa-facebook"
-            />
+            <Link to={"/login"} className="float-right text-xl">
+              Already Have Account?
+            </Link>
           </div>
           <button
             className="lg:hidden absolute py-1 px-16 bg-mainRed text-2xl font-bold rounded-2xl cursor-pointer"
@@ -151,16 +162,6 @@ function Register() {
             Sign In
           </button>
         </form>
-        <div className="flex mt-16 gap-10 lg:hidden">
-          <FacebookLogin
-            appId="304504911838312"
-            autoLoad={true}
-            fields="name,email,picture"
-            callback={responseFacebook}
-            cssClass="text-blue-500 flex items-center gap-2 py-4 px-4 bg-white rounded-3xl cursor-pointer flex items-center"
-            icon="fa-facebook"
-          />
-        </div>
       </div>
     </div>
   );

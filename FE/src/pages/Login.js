@@ -46,9 +46,7 @@ function Login() {
       });
       setCookie("Token", res.data.token, 10);
       navigate("/");
-    } catch (error) {
-    
-    }
+    } catch (error) {}
   };
 
   return (
@@ -106,11 +104,7 @@ function Login() {
               setPassword(e.target.value);
             }}
           />
-          <div className="flex items-center justify-between mt-4 cursor-pointer">
-            <div className="ml-2">
-              <input className="mr-2 " type="checkbox" />
-              <span>Remember me</span>
-            </div>
+          <div className="block lg:flex items-center justify-between mt-4 cursor-pointer">
             <button
               className="lg:block hidden py-1 px-10 bg-mainRed text-2xl  rounded-md cursor-pointer"
               onClick={(e) => {
@@ -119,7 +113,9 @@ function Login() {
             >
               Login
             </button>
-            <span className="float-right">Forgot password?</span>
+            <Link to={"/register"} className="float-right text-xl">
+              Dont have an Account?
+            </Link>
           </div>
           <div className="lg:flex hidden flex gap-10 w-full justify-center mt-10">
             <FacebookLogin

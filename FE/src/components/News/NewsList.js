@@ -11,14 +11,8 @@ function NewsList() {
   const [nameQuery, setNameQuery] = useState("");
 
   useEffect(() => {
-    if (!user) return;
     const getAllNews = async () => {
-      const res = await axios.get(
-        "http://localhost:5000/api/news/getapproved",
-        {
-          headers: { token: user.token },
-        }
-      );
+      const res = await axios.get("http://localhost:5000/api/news/getapproved");
       setNews(res.data);
     };
     getAllNews();
@@ -26,16 +20,11 @@ function NewsList() {
 
   const getByName = async (string) => {
     if (string === "") {
-      const res = await axios.get("http://localhost:5000/api/news/getall", {
-        headers: { token: user.token },
-      });
+      const res = await axios.get("http://localhost:5000/api/news/getall");
       setNews(res.data);
     } else {
       const res = await axios.get(
-        `http://localhost:5000/api/news/getbyname?name=${nameQuery}`,
-        {
-          headers: { token: user.token },
-        }
+        `http://localhost:5000/api/news/getbyname?name=${nameQuery}`
       );
       setNews(res.data);
     }
@@ -44,9 +33,11 @@ function NewsList() {
   return (
     <>
       <div>
-        <Link to={`/news/postnew`} className="text-mainRed">
-          Write your News
-        </Link>
+        {user && (
+          <Link to={`/news/postnew`} className="text-mainRed">
+            Write your News
+          </Link>
+        )}
       </div>
       <div className="relative">
         <input

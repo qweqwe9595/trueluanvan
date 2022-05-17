@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const authenticateToken = require("../middleware/authentica");
 //update user
 
-router.get("/movie/:id", authenticateToken, async (req, res) => {
+router.get("/movie/:id", async (req, res) => {
   try {
     const reviewsQuery = await reviewsModel
       .find({ movieId: req.params.id })

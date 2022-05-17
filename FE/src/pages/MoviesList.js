@@ -37,7 +37,7 @@ function MoviesList() {
           let upCommingMovies = await getUpComming(page);
           const upCommingMoviesArray = await upCommingMovies.upComming.map(
             async (movie) => {
-              return await joinRates(movie, user.token);
+              return await joinRates(movie, user?.token);
             }
           );
           await Promise.all(upCommingMoviesArray).then((res) => {
@@ -51,7 +51,7 @@ function MoviesList() {
           console.log(searchString);
           let searchMovies = await getSearchData(searchString, page);
           const searchMoviesArray = await searchMovies.map(async (movie) => {
-            return await joinRates(movie, user.token);
+            return await joinRates(movie, user?.token);
           });
           await Promise.all(searchMoviesArray).then((res) => {
             setMovies((prev) => [...res]);

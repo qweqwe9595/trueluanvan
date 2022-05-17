@@ -13,7 +13,7 @@ function Review({ review }) {
             alt=""
           />
           <span className="font-bold text-xl capitalize">
-            {review?.userId?.email}
+            {review?.userId?.userName || review?.userId?.email}
           </span>
         </div>
         <div className="flex gap-1 flex-row-reverse">

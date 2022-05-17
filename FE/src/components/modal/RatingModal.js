@@ -105,7 +105,12 @@ function RatingModal({ openProp, movie, yourRatingProp, review, refresh }) {
               })}
             </div>
             {review && (
-              <div className="w-full px-2 mt-2">
+              <div
+                className="w-full px-2 mt-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
                 <textarea
                   className="w-full text-mainPurple px-2 text-xl"
                   name=""
@@ -117,7 +122,6 @@ function RatingModal({ openProp, movie, yourRatingProp, review, refresh }) {
                 ></textarea>
               </div>
             )}
-
             <button
               className="w-full bg-yellow py-2 font-bold mt-2"
               onClick={() => {

@@ -10,6 +10,7 @@ function Reviews() {
   const [reviews, setReviews] = useState([]);
   const [refresh, setRefresh] = useState(false);
   useEffect(() => {
+    if (!user) return;
     if (Object.keys(user).length === 0) return;
     const getAllReviewMovies = async () => {
       const reviewsRes = await axios.get(

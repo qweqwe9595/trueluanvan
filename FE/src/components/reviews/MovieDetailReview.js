@@ -19,7 +19,9 @@ function MovieDetailReview({ movie, setRefresh }) {
   const [reviewSuccess, setReviewSucess] = useState(false);
 
   useEffect(async () => {
+    if (!getCookie("Token")) return;
     const token = `bearer ${getCookie("Token")}`;
+
     const res = await axios.get(
       `http://localhost:5000/api/rates/usersmovierate/${movie.id}`,
       { headers: { token } }
@@ -32,8 +34,7 @@ function MovieDetailReview({ movie, setRefresh }) {
   useEffect(async () => {
     const token = `bearer ${getCookie("Token")}`;
     const res = await axios.get(
-      `http://localhost:5000/api/reviews/movie/${movie.id}`,
-      { headers: { token } }
+      `http://localhost:5000/api/reviews/movie/${movie.id}`
     );
     setReviews(
       res.data.reviewsQuery.reverse().filter((item, index) => index < 5)
@@ -58,6 +59,7 @@ function MovieDetailReview({ movie, setRefresh }) {
       { headers: { token } }
     );
     setRefresh((prev) => !prev);
+    setReviewText("");
     setReviewSucess(true);
   };
   return (
@@ -88,13 +90,10 @@ function MovieDetailReview({ movie, setRefresh }) {
                 alt=""
               />
               <span className="font-bold text-xl capitalize">
-                {user?.email}
+                {user?.userName || user?.email}
               </span>
             </div>
-            <div
-              className="flex gap-1 flex-row-reverse"
-              onClick={() => setRating(true)}
-            >
+            <div className="flex gap-1 flex-row-reverse">
               {[...Array(5)].map((star, index) => {
                 return (
                   <div key={index}>
@@ -137,9 +136,6 @@ function MovieDetailReview({ movie, setRefresh }) {
               <AiOutlineSend className="text-mainRed text-2xl" type="submit" />
             </button>
           </div>
-          <h2 className="text-mainRed cursor-pointer float-right font-bold text-xl">
-            Detail {">>"}
-          </h2>
         </form>
       )}
       {reviews.map((review, index) => (

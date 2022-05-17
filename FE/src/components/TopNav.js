@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import { FaSearch, FaUserAlt } from "react-icons/fa";
 import { AiFillCaretDown } from "react-icons/ai";
 import SearchBox from "./smallSections/SearchBox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getCookie, eraseCookie } from "../helper/cookie";
 import { UserContext } from "../contexts/User/UserContext";
@@ -36,7 +36,12 @@ function TopNav() {
           <li className="mr-4 text-lg cursor-pointer">HOME</li>
         </Link>
 
-        <li className="mr-4 text-lg cursor-pointer">MOVIES</li>
+        <Link
+          to={"/movielist/upcommingmovies"}
+          className="mr-4 text-lg cursor-pointer"
+        >
+          MOVIES
+        </Link>
         <Link to="/news/trending">
           <li className="mr-4 text-lg cursor-pointer">NEWS</li>
         </Link>
@@ -136,8 +141,10 @@ function Menu({ menuHamburger }) {
 function MenuUser({ userId }) {
   const [user, setUser] = useContext(UserContext);
   const [isAdmin, setIsAdmin] = useState(false);
+  let navigate = useNavigate();
   const logOut = () => {
     setUser(null);
+    navigate("/");
     eraseCookie("Token");
   };
   useEffect(() => {

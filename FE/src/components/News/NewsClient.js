@@ -12,16 +12,13 @@ function NewsClient() {
     const getNews = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/news/getone/${newsId}`,
-          { headers: { token: user.token } }
+          `http://localhost:5000/api/news/getone/${newsId}`
         );
-        console.log(res);
         setNews(res.data);
       } catch (error) {
         console.log(error.response);
       }
     };
-    if (!user) return;
     getNews();
   }, [user]);
 

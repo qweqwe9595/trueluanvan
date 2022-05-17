@@ -7,12 +7,9 @@ const usersSchema = new mongoose.Schema(
     password: { type: String },
     img: { type: String },
     isAdmin: { type: Boolean, default: false },
-    sex: { type: Boolean },
+    sex: { type: Boolean, default: true },
     dateOfBirth: { type: Date },
-    messageFromAdmin: { type: String },
-    rates: { type: Array },
-    reviews: { type: Array },
-    polls:[{type:String,ref:`pollsModel`}]
+    polls: [{ type: String, ref: `pollsModel` }],
   },
   { timestamps: true }
 );

@@ -43,7 +43,7 @@ router.get("/getapproved", async (req, res) => {
 });
 
 //get a mews
-router.get("/getone/:id", authenticateToken, async (req, res) => {
+router.get("/getone/:id", async (req, res) => {
   try {
     const newsQuery = await newsModel
       .findById(req.params.id)
@@ -55,7 +55,7 @@ router.get("/getone/:id", authenticateToken, async (req, res) => {
 });
 
 //get newss with name
-router.get("/getbyname", authenticateToken, async (req, res) => {
+router.get("/getbyname", async (req, res) => {
   try {
     if (!req.query.name) req.query.name = "";
     const newsQuery = await newsModel
