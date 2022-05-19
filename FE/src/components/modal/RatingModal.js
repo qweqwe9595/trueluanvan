@@ -8,14 +8,14 @@ function RatingModal({
   movie,
   yourRatingProp,
   review,
-  refresh,
+  refresh = false,
   setRefresh = false,
 }) {
   const [open, setOpen] = openProp;
   const [yourRating, setYourRating] = yourRatingProp || [];
   const [ratingValue, setRatingValue] = useState(1);
   const [reviewText, setReviewText] = useState(review?.review || "");
-
+  console.log(typeof setRefresh === "function");
   //rating or reviewing
   const rating = async () => {
     try {
@@ -28,8 +28,11 @@ function RatingModal({
         },
         { headers: { token } }
       );
-      if (refresh) {
+      if (typeof setRefresh === "function") {
         setRefresh((prev) => !prev);
+      }
+      if (typeof refresh === "function") {
+        refresh((prev) => !prev);
       }
 
       setYourRating(ratingValue);
@@ -41,8 +44,11 @@ function RatingModal({
         },
         { headers: { token } }
       );
-      if (refresh) {
+      if (typeof setRefresh === "function") {
         setRefresh((prev) => !prev);
+      }
+      if (typeof refresh === "function") {
+        refresh((prev) => !prev);
       }
     } catch (err) {
       console.log(err);

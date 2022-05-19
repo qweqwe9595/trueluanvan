@@ -30,6 +30,21 @@ router.get("/getall", async (req, res) => {
   }
 });
 
+//get all news
+router.get("/getuser", authenticateToken, async (req, res) => {
+  try {
+    let newsQuery = await newsModel.find({ userId: req.user._id });
+    console.log(req.user._id);
+    if (req.query.query === "user") {
+      newsQuery = await newsModel.find().populate("userId");
+    }
+    res.status(200).json(newsQuery.reverse());
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 //get all approved news
 router.get("/getapproved", async (req, res) => {
   try {

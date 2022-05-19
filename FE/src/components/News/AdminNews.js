@@ -17,6 +17,7 @@ function AdminNews() {
   const [summary, setSummary] = useState("Summary Here");
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  console.log(newsName);
 
   const htmlRef = useRef(null);
   const [data, setData] = useState([]);
@@ -126,23 +127,23 @@ function AdminNews() {
             contentEditable={edit ? true : false}
             className="text-3xl text-center text-mainRed outline-0 hover:border hover:border-dashed hover:border-white max-w-full break-words"
             onInput={(e) => {
-              e.target.html(getCaretPosition(e.target));
+              // e.target.html(getCaretPosition(e.target));
               setNewsName(e.target.textContent);
             }}
             suppressContentEditableWarning={true}
           >
-            {newsName}
+            News's Name
           </h1>
           <h3
             className="text-xl outline-0 hover:border hover:border-dashed hover:border-white break-words"
             contentEditable={edit ? true : false}
             onInput={(e) => {
               setSummary(e.target.textContent);
-              e.target.html(getCaretPosition(e.target));
+              // e.target.html(getCaretPosition(e.target));
             }}
             suppressContentEditableWarning={true}
           >
-            {summary}
+            Summary Here
           </h3>
           <p className="text-right ">
             By{" "}

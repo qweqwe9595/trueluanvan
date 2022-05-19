@@ -9,6 +9,8 @@ const usersSchema = new mongoose.Schema(
     isAdmin: { type: Boolean, default: false },
     sex: { type: Boolean, default: true },
     dateOfBirth: { type: Date },
+    rates: [{ type: String, ref: `ratesModel` }],
+    reviews: [{ type: String, ref: `reviewsModel` }],
     polls: [{ type: String, ref: `pollsModel` }],
   },
   { timestamps: true }

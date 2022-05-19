@@ -92,9 +92,12 @@ function Profile() {
           <span className="font-bold text-2xl text-mainRed">{" >>"}</span>
         </Link>
       </div>
-      <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
+      <Link
+        to={"/yourNews"}
+        className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero"
+      >
         All your news hear
-      </div>
+      </Link>
       <div>
         <Footer></Footer>
       </div>

@@ -42,7 +42,14 @@ router.post("/reviewing", authenticateToken, async (req, res) => {
   try {
     const reviewsQuery = await new reviewsModel(req.body);
     reviewsQuery.save();
-    res.status(200).json({ reviewsQuery });
+    const userQuery = await usersModal.findByIdAndUpdate(
+      req.user._id,
+      {
+        $addToSet: { reviews: req.body.movieId },
+      },
+      { new: true }
+    );
+    res.status(200).json({ reviewsQuery, userQuery });
   } catch (error) {
     res.status(500).json(error.message);
   }

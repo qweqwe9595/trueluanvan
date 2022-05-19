@@ -2,6 +2,7 @@ const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const authenticateToken = require("../middleware/authentica");
 const ratesModel = require("../models/ratesModel");
+const userModel = require("../models/usersModel");
 require("dotenv").config();
 
 //get all rates
@@ -100,7 +101,14 @@ router.post("/rating", authenticateToken, async (req, res) => {
         },
         { new: true }
       );
-      return res.status(200).json(movieUpdate);
+      const userRate = await userModel.findByIdAndUpdate(
+        req.user._id,
+        {
+          $addToSet: { rates: req.body.movieId },
+        },
+        { new: true }
+      );
+      return res.status(200).json({ movieUpdate, userRate });
     }
   } catch (err) {
     res.status(500).json(err);
@@ -129,7 +137,6 @@ router.patch("/", authenticateToken, async (req, res) => {
 
 //delete a rate
 router.delete("/:id", authenticateToken, async (req, res) => {
-  console.log(req.user._id);
   try {
     if (!req.user) res.status(401).json({ message: "no user" });
     const rateQuery = await ratesModel.findOne({

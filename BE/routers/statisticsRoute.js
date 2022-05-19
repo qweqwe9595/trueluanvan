@@ -185,5 +185,30 @@ router.get("/news", async (req, res) => {
 });
 
 //get top user rates
+router.get("/toprate", async (req, res) => {
+  try {
+    const userQuery = await usersModel.find();
+
+    const sort = userQuery.sort((a, b) => {
+      return b.rates.length - a.rates.length;
+    });
+
+    res.status(200).json(sort);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
+//get top user reviews
+router.get("/topreview", async (req, res) => {
+  try {
+    const userQuery = await usersModel.find();
+    const sort = userQuery.sort((a, b) => {
+      return b.reviews.length - a.reviews.length;
+    });
+    res.status(200).json(sort);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
 
 module.exports = router;

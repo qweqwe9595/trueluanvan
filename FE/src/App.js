@@ -17,7 +17,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
 import Reviews from "./pages/Reviews";
-import TrendingNews from "./pages/News/TrendingNews";
+import TrendingNews from "./pages/News/TrendingNews copy";
 import Dashboard from "./components/admin/big Component/Dashboard";
 import Setting from "./components/admin/big Component/Setting";
 import Tables from "./components/admin/big Component/News";
@@ -26,6 +26,7 @@ import RatesAdmin from "./components/admin/big Component/Rates";
 import Polls from "./pages/Polls";
 import PollsDetail from "./pages/PollsDetail";
 import CeleLists from "./pages/CeleLists";
+import YourNews from "./pages/News/YourNews";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -84,8 +85,9 @@ function App() {
       <Route path="/news">
         <Route path=":id" element={<News />} />
         <Route path="trending" element={<TrendingNews />} />
-        <Route path="postnew" element={<PostNews />} />a
+        <Route path="postnew" element={<PostNews />} />
       </Route>
+      <Route path="/yournews" element={<YourNews />} />
       <Route path="/admin" element={<Admin />}>
         <Route path="" element={<Dashboard />} />
         <Route path="settings" element={<Setting />} />

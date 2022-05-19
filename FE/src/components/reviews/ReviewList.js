@@ -20,7 +20,6 @@ function ReviewList({ review, refresh }) {
         { headers: { token: user.token } }
       );
       setRate(res.data);
-      setReviewPoint(res.data.review);
     };
     getRate();
   }, [review]);

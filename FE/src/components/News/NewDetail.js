@@ -40,7 +40,7 @@ function NewDetail({ dataProp, index, contentProp, edit, setEdit }) {
           contentEditable={edit === index ? "true" : "false"}
           onInput={(e) => {
             setName(e.target.textContent);
-            addContent;
+            addContent();
           }}
           suppressContentEditableWarning={true}
         >

@@ -2,8 +2,10 @@ import React, { useContext } from "react";
 import { ConfirmDialogContext } from "../../contexts/Dialog/dialogContext";
 import axios from "axios";
 import { getCookie } from "../../helper/cookie";
+import { UserContext } from "../../contexts/User/UserContext";
 
 function RateConfirm() {
+  const [user] = useContext(UserContext);
   const [confirmDialog, setConfirmDialog] = useContext(ConfirmDialogContext);
   const { movieId, point } = confirmDialog;
 
@@ -16,7 +18,7 @@ function RateConfirm() {
           movieId,
           point,
         },
-        { headers: { token } }
+        { headers: { token: user, token } }
       );
       setConfirmDialog({ open: false });
     } catch (err) {
