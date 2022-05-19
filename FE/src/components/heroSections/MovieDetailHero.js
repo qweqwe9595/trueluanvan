@@ -7,7 +7,7 @@ import axios from "axios";
 import { UserContext } from "../../contexts/User/UserContext";
 import { getCookie } from "../../helper/cookie";
 
-function MovieDetailHero({ movie }) {
+function MovieDetailHero({ movie, setRefresh }) {
   const [user] = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const directors = movie?.credits?.crew?.filter(
@@ -85,6 +85,7 @@ function MovieDetailHero({ movie }) {
         openProp={[open, setOpen]}
         movie={movie}
         yourRatingProp={[yourRating, setYourRating]}
+        setRefresh={setRefresh}
       />
       <div className="w-full px-10 lg:px-60 md:flex py-4 relative bg-hero ">
         <div className="w-full px-10 rounded-xl font-dosis md:max-w-lg flex flex-col items-center gap-2">

@@ -80,7 +80,7 @@ router.post("/rating", authenticateToken, async (req, res) => {
       movieId: req.body.movieId,
       userId: req.user._id,
     });
-    if (!movieQuery || req.body.point === 0) {
+    if (!movieQuery || movieQuery.point == 0) {
       const newRateQuery = await new ratesModel({
         ...req.body,
         ...{ userId: req.user._id },

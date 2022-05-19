@@ -15,14 +15,13 @@ export default function Sidebar() {
         className={`h-screen fixed top-0 md:left-0 ${showSidebar} overflow-y-auto flex-row flex-nowrap overflow-hidden shadow-xl bg-white w-64 z-10 py-4 px-6 transition-all duration-300`}
       >
         <div className="flex-col items-stretch min-h-full flex-nowrap px-0 relative">
-          <a
-            href="https://material-tailwind.com?ref=mtd"
+          <Link
+            to={"/"}
             target="_blank"
-            rel="noreferrer"
             className="mt-2 text-center w-full inline-block"
           >
-            <H6 className="text-mainPurple">Admin Site</H6>
-          </a>
+            <H6 className="text-mainPurple">Back To Home</H6>
+          </Link>
           <div className="flex flex-col">
             <hr className="my-4 min-w-full" />
 
@@ -80,7 +79,7 @@ export default function Sidebar() {
                   Reviews
                 </Link>
               </li>
-              <li className="rounded-lg mb-2">
+              {/* <li className="rounded-lg mb-2">
                 <Link
                   to="/admin/settings"
                   className={`flex items-center gap-4 text-sm text-gray-700 font-light px-4 py-3 rounded-lg ${
@@ -92,20 +91,7 @@ export default function Sidebar() {
                   <Icon name="settings" size="2xl" />
                   Settings
                 </Link>
-              </li>
-            </ul>
-
-            <ul className="flex-col min-w-full flex list-none absolute bottom-0">
-              <li className="bg-gradient-to-tr from-purple-500 to-purple-700 px-4 rounded-lg text-white">
-                <a
-                  href="https://www.creative-tim.com/product/material-tailwind-dashboard-react"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-center gap-4 text-sm font-light py-3"
-                >
-                  Free Download
-                </a>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

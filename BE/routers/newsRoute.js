@@ -57,9 +57,14 @@ router.get("/getone/:id", async (req, res) => {
 //get newss with name
 router.get("/getbyname", async (req, res) => {
   try {
-    if (!req.query.name) req.query.name = "";
+    if (!req.query.name) {
+      const newsQuery = await newsModel
+        .find({ approved: true })
+        .populate("userId");
+      return res.status(200).json(newsQuery);
+    }
     const newsQuery = await newsModel
-      .find({ newsName: { $regex: req.query.name } })
+      .find({ newsName: { $regex: req.query.name }, approved: true })
       .populate("userId");
     res.status(200).json(newsQuery);
   } catch (err) {
@@ -72,7 +77,6 @@ router.post(
   "/createone",
   [authenticateToken, upload.array("newsImgs", 5)],
   async (req, res) => {
-    console.log(req.files);
     try {
       const newsQuery = await new newsModel({
         ...req.body,
@@ -85,7 +89,6 @@ router.post(
           newsQuery.contents[index].contentImg = req.files[index].filename;
         });
       }
-
       await newsQuery.save();
       res.status(200).json(newsQuery);
     } catch (err) {

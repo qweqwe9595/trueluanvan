@@ -3,7 +3,14 @@ import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { getCookie } from "../../helper/cookie";
 
-function RatingModal({ openProp, movie, yourRatingProp, review, refresh }) {
+function RatingModal({
+  openProp,
+  movie,
+  yourRatingProp,
+  review,
+  refresh,
+  setRefresh,
+}) {
   const [open, setOpen] = openProp;
   const [yourRating, setYourRating] = yourRatingProp || [];
   const [ratingValue, setRatingValue] = useState(1);
@@ -21,6 +28,7 @@ function RatingModal({ openProp, movie, yourRatingProp, review, refresh }) {
         },
         { headers: { token } }
       );
+      setRefresh((prev) => !prev);
       setYourRating(ratingValue);
       if (!review) return;
       const resReview = await axios.patch(
@@ -32,7 +40,7 @@ function RatingModal({ openProp, movie, yourRatingProp, review, refresh }) {
       );
       refresh((prev) => !prev);
     } catch (err) {
-      console.log(err.response);
+      console.log(err);
     }
   };
 

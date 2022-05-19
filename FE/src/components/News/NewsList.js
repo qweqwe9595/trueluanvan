@@ -20,7 +20,7 @@ function NewsList() {
 
   const getByName = async (string) => {
     if (string === "") {
-      const res = await axios.get("http://localhost:5000/api/news/getall");
+      const res = await axios.get("http://localhost:5000/api/news/getapproved");
       setNews(res.data);
     } else {
       const res = await axios.get(

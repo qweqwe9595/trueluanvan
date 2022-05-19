@@ -102,6 +102,7 @@ router.patch("/pushmovie/:id", async (req, res) => {
 // pull a movie out
 router.patch("/pullmovie/:id", async (req, res) => {
   try {
+    console.log(req.body.movieId);
     const movieQuery = await movieListModel.findById(req.params.id);
     if (!movieQuery.movies.includes(req.body.movieId)) {
       return res.status(200).json({ message: "dont have" });

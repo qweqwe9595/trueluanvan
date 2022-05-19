@@ -16,7 +16,6 @@ function NewDetail({ dataProp, index, contentProp, edit, setEdit }) {
     temp[index] = { contentName: name, contentText: text };
     temp[index].contentImg = fileRef.current.files[0] || null;
     setData(temp);
-    console.log(temp);
   };
 
   useEffect(() => {

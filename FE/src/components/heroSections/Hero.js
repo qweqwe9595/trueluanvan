@@ -4,7 +4,6 @@ import { newdummys } from "../../dummy/newdummys";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-
 function Hero() {
   const [current, setCurrent] = useState(0);
   const length = newdummys.length;
@@ -12,7 +11,7 @@ function Hero() {
 
   useEffect(() => {
     const getNews = async () => {
-      const res = await axios.get("http://localhost:5000/api/news/getall");
+      const res = await axios.get("http://localhost:5000/api/news/getapproved");
       const newsFilter = res.data.filter((item, i) => {
         return i < 3;
       });
@@ -61,10 +60,12 @@ function Hero() {
           }
           return (
             <Link
-            to={`/news/${e._id}`}
+              to={`/news/${e._id}`}
               key={index}
               className={
-                (current === index ? "visible opacity-100" : "invisible opacity-0") +
+                (current === index
+                  ? "visible opacity-100"
+                  : "invisible opacity-0") +
                 " absolute bg-no-repeat shrink-0 w-full h-full ease-in-out duration-500 rounded flex justify-center items-end"
               }
               style={{
@@ -73,7 +74,9 @@ function Hero() {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
               }}
-              onClick={(event)=>{event.stopPropagation();}}
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
             >
               <div className="text-white bg-lightPurpleBlur w-10/12 h-fit shrink-0 rounded mb-4 border-l-4 border-mainRed pl-4 py-4">
                 <h1 className="text-2xl font-bold">{e?.newsName}</h1>
@@ -106,7 +109,7 @@ function Hero() {
 
           return (
             <Link
-            to={`/news/${item._id}`}
+              to={`/news/${item._id}`}
               key={index}
               className="flex hover:bg-mainRedBlur py-1 px-2 cursor-pointer items-center"
             >

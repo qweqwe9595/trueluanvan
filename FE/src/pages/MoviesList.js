@@ -64,7 +64,7 @@ function MoviesList() {
   return (
     <div className="flex flex-col w-screen max-w-full bg-mainPurple text-white ">
       <TopNav></TopNav>
-      <div className="flex flex-col w-screen max-w-full">
+      <div className="flex flex-col w-screen max-w-full min-h-screen">
         <div className="w-full px-4 lg:px-80 mt-10">
           <MoviesSection4
             more={[page, setPage]}

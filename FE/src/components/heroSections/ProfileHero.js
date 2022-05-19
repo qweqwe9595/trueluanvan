@@ -22,16 +22,6 @@ function ProfileHero({ rateAmount, reviewAmount }) {
     img = "defaultNewsImg.jpg";
   }
 
-  const editProfile = async () => {
-    try {
-      const res = await axios.patch(
-        `http://localhost:5000/api/users/${user._id}`,
-        { userName, sex, dateOfBirth },
-        { headers: { token: user.token } }
-      );
-    } catch (error) {}
-  };
-
   return (
     <>
       <Modal size="lg" active={showModal} toggler={() => setShowModal(false)}>

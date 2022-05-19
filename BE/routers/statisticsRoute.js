@@ -184,4 +184,6 @@ router.get("/news", async (req, res) => {
   }
 });
 
+//get top user rates
+
 module.exports = router;

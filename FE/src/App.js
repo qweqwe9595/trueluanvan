@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import MovieDetail from "./pages/MovieDetail";
 import Rates from "./pages/Rates";
+import Lists from "./pages/Lists";
 import PostNews from "./pages/News/PostNews";
 import News from "./pages/News/News";
 import { Routes, Route } from "react-router-dom";
@@ -77,6 +78,7 @@ function App() {
       <Route path="/movielist/:type" element={<MoviesList />} />
       <Route path="/rates" element={<Rates />} />
       <Route path="/reviews" element={<Reviews />} />
+      <Route path="/lists" element={<Lists />} />
       <Route path="/news">
         <Route path=":id" element={<News />} />
         <Route path="trending" element={<TrendingNews />} />

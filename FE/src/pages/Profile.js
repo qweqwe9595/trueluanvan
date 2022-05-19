@@ -63,7 +63,6 @@ function Profile() {
     setReviews(res.data.reviewsQuery.reverse());
   }, []);
 
-  console.log(watchLater);
   return (
     <div className="flex flex-col w-screen max-w-full bg-mainPurple text-white">
       <TopNav />
@@ -83,28 +82,19 @@ function Profile() {
           </Link>
         </div>
       </div>
-      {/* <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
-        <MoviesSection3 type="Tv show" categories={["action", "romance"]} />
-      </div> */}
       <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
         <ReviewGenerality reviews={reviews} />
       </div>
       <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
         <MoviesSection3 type={`Watch Later`} movies={watchLater} rate={false} />
-        <div className="float-right mt-4 font-dosis text-xl">
-          See All List {user?.list?.length}
+        <Link to={"/lists"} className="float-right mt-4 font-dosis text-xl">
+          See All
           <span className="font-bold text-2xl text-mainRed">{" >>"}</span>
-        </div>
-      </div>
-      <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
-        <PollGenerality />
+        </Link>
       </div>
       <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
         All your news hear
       </div>
-      {/* <div className="mx-2 md:mx-10 xl:mx-52 2xl:mx-64 bg-lightPurple mt-10 px-10 py-4 rounded-xl profileHero">
-        <MoviesSection2 type="Tv show" categories={["action", "romance"]} />
-      </div> */}
       <div>
         <Footer></Footer>
       </div>

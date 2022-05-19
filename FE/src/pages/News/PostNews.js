@@ -8,8 +8,8 @@ function PostNews() {
   return (
     <div className="flex flex-col w-screen max-w-full text-white bg-mainPurple">
       <TopNav></TopNav>
-      <div className="w-screen max-w-full px-10 lg:px-60 mt-10">
-        <MovieDetailWall content={"STORY LINE"} />
+      <div className="w-screen max-w-full px-10 lg:px-60 mt-10 min-h-screen">
+        <MovieDetailWall content={"Create a News"} />
         <AdminNews />
       </div>
       <div className="w-screen max-w-full mt-10">

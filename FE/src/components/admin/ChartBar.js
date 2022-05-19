@@ -88,7 +88,7 @@ export default function ChartBar({ data1, data2, data1Name, data2Name }) {
         <h6 className="uppercase text-gray-200 text-xs font-medium">
           Overview
         </h6>
-        <h2 className="text-white text-2xl">Sales value</h2>
+        <h2 className="text-white text-2xl">Rates And Comment</h2>
       </CardHeader>
       <CardBody>
         <div className="relative h-96">

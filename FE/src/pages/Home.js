@@ -131,9 +131,6 @@ function Home() {
           ></MoviesSection3>
         </div>
         <div className="w-full px-4 lg:px-20 bg-Purple">
-          <StatisticalTable
-            contents={["top view", "top rate", "top box office"]}
-          />
           <Footer></Footer>
         </div>
       </div>
