@@ -86,7 +86,9 @@ function MovieDetailReview({ movie, setRefresh }) {
             <div className="flex items-center gap-2 ">
               <img
                 className="h-16 w-16 rounded-full object-cover p-1 border-mainRed border-2"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Leonardo_Dicaprio_Cannes_2019_2.jpg/250px-Leonardo_Dicaprio_Cannes_2019_2.jpg"
+                src={`http://localhost:5000/images/${
+                  user?.img || "defaultNewsImg.jpg"
+                }`}
                 alt=""
               />
               <span className="font-bold text-xl capitalize">

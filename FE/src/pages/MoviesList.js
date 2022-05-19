@@ -48,7 +48,6 @@ function MoviesList() {
       case "search":
         {
           let searchString = searchParams.get("string");
-          console.log(searchString);
           let searchMovies = await getSearchData(searchString, page);
           const searchMoviesArray = await searchMovies.map(async (movie) => {
             return await joinRates(movie, user?.token);
@@ -65,14 +64,13 @@ function MoviesList() {
     <div className="flex flex-col w-screen max-w-full bg-mainPurple text-white ">
       <TopNav></TopNav>
       <div className="flex flex-col w-screen max-w-full min-h-screen">
-        <div className="w-full px-4 lg:px-80 mt-10">
+        <div className="w-full px-4 mt-10">
           <MoviesSection4
             more={[page, setPage]}
             moviesProp={[movies, setMovies]}
             resest={setResestFilter}
           ></MoviesSection4>
         </div>
-
         <div className="w-full px-4 lg:px-20 bg-Purple">
           <Footer></Footer>
         </div>

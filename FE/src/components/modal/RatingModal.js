@@ -9,7 +9,7 @@ function RatingModal({
   yourRatingProp,
   review,
   refresh,
-  setRefresh,
+  setRefresh = false,
 }) {
   const [open, setOpen] = openProp;
   const [yourRating, setYourRating] = yourRatingProp || [];
@@ -28,7 +28,10 @@ function RatingModal({
         },
         { headers: { token } }
       );
-      setRefresh((prev) => !prev);
+      if (refresh) {
+        setRefresh((prev) => !prev);
+      }
+
       setYourRating(ratingValue);
       if (!review) return;
       const resReview = await axios.patch(
@@ -38,7 +41,9 @@ function RatingModal({
         },
         { headers: { token } }
       );
-      refresh((prev) => !prev);
+      if (refresh) {
+        setRefresh((prev) => !prev);
+      }
     } catch (err) {
       console.log(err);
     }

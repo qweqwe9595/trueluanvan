@@ -5,7 +5,6 @@ import NavbarInput from "@material-tailwind/react/NavbarInput";
 import Image from "@material-tailwind/react/Image";
 import Dropdown from "@material-tailwind/react/Dropdown";
 import DropdownItem from "@material-tailwind/react/DropdownItem";
-import ProfilePicture from "../../assets/img/team-1-800x800.jpg";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/User/UserContext";
 
@@ -70,7 +69,12 @@ export default function AdminNavbar({ showSidebar, setShowSidebar }) {
                   }}
                 >
                   <p className="text-white">{userName}</p>
-                  <Image src={ProfilePicture} rounded />
+                  <Image
+                    src={`http://localhost:5000/images/${
+                      user?.img || "defaultNewsImg.jpg"
+                    }`}
+                    rounded
+                  />
                 </div>
               }
               rounded

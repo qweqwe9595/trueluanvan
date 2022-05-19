@@ -30,6 +30,7 @@ router.patch(
         },
         { new: true }
       );
+      console.log(req.file);
       if (req.file) {
         userUpdateQuery.img = req.file.filename;
         await userUpdateQuery.save();

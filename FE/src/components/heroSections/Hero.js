@@ -52,7 +52,7 @@ function Hero() {
         backgroundPosition: "top",
       }}
     >
-      <div className="w-full md:w-8/12 relative h-80 ">
+      <div className="w-full xl:w-7/12 2xl:2-8/12 relative h-80 ">
         {news.map((e, index) => {
           let img = e?.contents[0]?.contentImg;
           if (!e?.contents[0]?.contentImg) {
@@ -100,7 +100,7 @@ function Hero() {
           </div>
         </button>
       </div>
-      <div className="hidden h-80 md:flex md:flex flex-col ml-3 justify-between w-4/12">
+      <div className="hidden h-80 lg:flex 2xl:flex flex-col ml-3 justify-between w-5/12">
         {news.map((item, index) => {
           let img = item?.contents[0]?.contentImg;
           if (!item?.contents[0]?.contentImg) {
@@ -121,7 +121,11 @@ function Hero() {
                 />
               </div>
               <div className="flex flex-col text-white justify-center ml-1">
-                <h1 className="font-bold text-sm">{item?.newsName}</h1>
+                <h1 className="font-bold text-sm">
+                  {!item?.newsName.length > 60
+                    ? item?.newsName
+                    : `${item?.newsName.slice(0, 60)}....`}
+                </h1>
                 <h1 className="text-sm">
                   {!item?.newsShortContent.length > 30
                     ? item?.newsShortContent

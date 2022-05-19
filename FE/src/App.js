@@ -25,6 +25,7 @@ import ReviewsAdmin from "./components/admin/big Component/Reviews";
 import RatesAdmin from "./components/admin/big Component/Rates";
 import Polls from "./pages/Polls";
 import PollsDetail from "./pages/PollsDetail";
+import CeleLists from "./pages/CeleLists";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -76,6 +77,7 @@ function App() {
       <Route path="/detail/:movieId" element={<MovieDetail />} />
       <Route path="/cele/detail/:celeId" element={<CeleDetail />} />
       <Route path="/movielist/:type" element={<MoviesList />} />
+      <Route path="/celelist" element={<CeleLists />} />
       <Route path="/rates" element={<Rates />} />
       <Route path="/reviews" element={<Reviews />} />
       <Route path="/lists" element={<Lists />} />

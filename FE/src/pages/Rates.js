@@ -11,7 +11,7 @@ function Rates() {
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(user).length == 0) return;
+    if (!user) return;
     const concatMovies = async () => {
       const getAllUserRatesRes = await axios.get(
         "http://localhost:5000/api/rates/user",

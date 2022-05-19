@@ -33,7 +33,7 @@ function NewsClient() {
           <p className="text-right ">
             By{" "}
             <span className="text-mainRed outline-0 ">
-              {news?.userId?.email}
+              {news?.userId?.userName || news?.userId?.email}
             </span>
           </p>
         </div>

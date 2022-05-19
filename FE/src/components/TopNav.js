@@ -35,7 +35,6 @@ function TopNav() {
         <Link to="/">
           <li className="mr-4 text-lg cursor-pointer">HOME</li>
         </Link>
-
         <Link
           to={"/movielist/upcommingmovies"}
           className="mr-4 text-lg cursor-pointer"
@@ -45,9 +44,8 @@ function TopNav() {
         <Link to="/news/trending">
           <li className="mr-4 text-lg cursor-pointer">NEWS</li>
         </Link>
-        <li className="mr-4 text-lg cursor-pointer">CELEBRITIES</li>
-        <Link to="/polls/trending">
-          <li className="text-lg cursor-pointer">POLLS</li>
+        <Link to={"/celelist"} className="mr-4 text-lg cursor-pointer">
+          CELEBRITIES{" "}
         </Link>
       </ul>
       <ul className="md:flex hidden flex items-center">
@@ -120,19 +118,27 @@ function Menu({ menuHamburger }) {
       }
     >
       <li className="font-bold text-center w-full text-lg cursor-pointer pt-2 pb-2 hover:bg-mainRed">
-        HOME
+        <Link to="/">
+          <li className="mr-4 text-lg cursor-pointer">HOME</li>
+        </Link>
       </li>
       <li className="font-bold text-center w-full text-lg cursor-pointer pt-2 pb-2 hover:bg-mainRed">
-        MOVIES
+        <Link
+          to={"/movielist/upcommingmovies"}
+          className="mr-4 text-lg cursor-pointer"
+        >
+          MOVIES
+        </Link>
       </li>
       <li className="font-bold text-center w-full text-lg cursor-pointer pt-2 pb-2 hover:bg-mainRed">
-        TV SHOW
+        <Link to={"/celelist"} className="mr-4 text-lg cursor-pointer">
+          CELEBRITIES{" "}
+        </Link>
       </li>
       <li className="font-bold text-center w-full text-lg cursor-pointer pt-2 pb-2 hover:bg-mainRed">
-        CELEBRITIES
-      </li>
-      <li className="font-bold text-center w-full text-lg cursor-pointer pt-2 pb-2 hover:bg-mainRed">
-        PAGE
+        <Link to="/news/trending">
+          <li className="mr-4 text-lg cursor-pointer">NEWS</li>
+        </Link>
       </li>
     </ul>
   );
